@@ -78,7 +78,7 @@
     -   Add a method to the `Game` class (e.g., `getGameState()`) that returns a simple object containing the positions of the paddles and the ball, and the current score.
     -   In `backend/src/server.ts`, create a basic game instance and periodically (e.g., every second using `setInterval`) call `updateBall()` and `getGameState()`, logging the output to the console. This is for initial testing of the game logic.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.8: Merge Backend Game Logic Foundation:**
+-   [x] **To-do 1.2.8: Merge Backend Game Logic Foundation:**
     -   Create a Pull Request (PR) from the `feature/backend-game-logic` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
