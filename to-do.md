@@ -4,14 +4,14 @@
 
 ### Chunk 1.1: Backend Project Initialization & Socket.IO Setup
 
--   [ ] **To-do 1.1.1: Initialize Backend Project:**
+-   [x] **To-do 1.1.1: Initialize Backend Project:**
     -   Navigate to the `backend` folder in your project directory in the terminal.
     -   Run `npm init -y` to create a `package.json` file with default settings.
     -   Install essential backend dependencies: `npm install express cors socket.io @types/express @types/cors @types/socket.io --save`.
     -   Install development dependencies for TypeScript: `npm install typescript ts-node nodemon @types/node --save-dev`.
     -   Initialize TypeScript configuration: Run `npx tsc --init`.
     -   **GitHub Action:** Create a new branch named `feature/backend-setup`.
--   [ ] **To-do 1.1.2: Configure `tsconfig.json`:**
+-   [x] **To-do 1.1.2: Configure `tsconfig.json`:**
     -   Open `backend/tsconfig.json` and adjust the compiler options as follows (or as per your preference):
         ```json
         {
