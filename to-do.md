@@ -54,31 +54,31 @@
 
 ### Chunk 1.2: Core Game Logic - Ball and Paddle Entities
 
--   [ ] **To-do 1.2.1: Create `Game` Class:**
+-   [x] **To-do 1.2.1: Create `Game` Class:**
     -   Create a new directory `backend/src/game`.
     -   Create a file `backend/src/game/Game.ts`.
     -   Define a `Game` class that will encapsulate the state and logic of a single game instance. This class should hold information about the paddles, ball, and score.
     -   **GitHub Action:** Create a new branch named `feature/backend-game-logic` based on `main`.
--   [ ] **To-do 1.2.2: Define `Paddle` Interface/Class:**
+-   [x] **To-do 1.2.2: Define `Paddle` Interface/Class:**
     -   In `backend/src/game/Paddle.ts`, define an interface `Paddle` or a class `Paddle`. It should have properties like `x`, `y`, `width`, `height`. Consider methods for updating the paddle's `y` position.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.3: Define `Ball` Interface/Class:**
+-   [x] **To-do 1.2.3: Define `Ball` Interface/Class:**
     -   In `backend/src/game/Ball.ts`, define an interface `Ball` or a class `Ball`. It should have properties like `x`, `y`, `radius`, `velocityX`, `velocityY`. Consider a method for updating the ball's position based on its velocity.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.4: Initialize Game State in `Game` Class:**
+-   [x] **To-do 1.2.4: Initialize Game State in `Game` Class:**
     -   In the `Game` class in `backend/src/game/Game.ts`, initialize the positions and properties of the two paddles and the ball. Define initial scores for both players (e.g., 0). Determine the initial direction and speed of the ball.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.5: Implement Ball Movement Logic:**
+-   [x] **To-do 1.2.5: Implement Ball Movement Logic:**
     -   In the `Game` class, implement a method (e.g., `updateBall()`) that updates the ball's `x` and `y` coordinates based on its `velocityX` and `velocityY`.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.6: Implement Basic Wall Collision Detection:**
+-   [x] **To-do 1.2.6: Implement Basic Wall Collision Detection:**
     -   In the `updateBall()` method, add logic to detect collisions with the top and bottom walls of the game area. When a collision occurs, the `velocityY` of the ball should be reversed. Assume a defined height for the game area.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.7: Basic Game State Representation (Console Logging):**
+-   [x] **To-do 1.2.7: Basic Game State Representation (Console Logging):**
     -   Add a method to the `Game` class (e.g., `getGameState()`) that returns a simple object containing the positions of the paddles and the ball, and the current score.
     -   In `backend/src/server.ts`, create a basic game instance and periodically (e.g., every second using `setInterval`) call `updateBall()` and `getGameState()`, logging the output to the console. This is for initial testing of the game logic.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.8: Merge Backend Game Logic Foundation:**
+-   [x] **To-do 1.2.8: Merge Backend Game Logic Foundation:**
     -   Create a Pull Request (PR) from the `feature/backend-game-logic` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
