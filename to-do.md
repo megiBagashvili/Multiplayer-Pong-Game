@@ -65,7 +65,7 @@
 -   [x] **To-do 1.2.3: Define `Ball` Interface/Class:**
     -   In `backend/src/game/Ball.ts`, define an interface `Ball` or a class `Ball`. It should have properties like `x`, `y`, `radius`, `velocityX`, `velocityY`. Consider a method for updating the ball's position based on its velocity.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.4: Initialize Game State in `Game` Class:**
+-   [x] **To-do 1.2.4: Initialize Game State in `Game` Class:**
     -   In the `Game` class in `backend/src/game/Game.ts`, initialize the positions and properties of the two paddles and the ball. Define initial scores for both players (e.g., 0). Determine the initial direction and speed of the ball.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
 -   [ ] **To-do 1.2.5: Implement Ball Movement Logic:**

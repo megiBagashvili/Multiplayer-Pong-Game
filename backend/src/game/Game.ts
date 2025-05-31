@@ -1,24 +1,17 @@
-// Placeholder types - these will be fleshed out in later tasks (1.2.2, 1.2.3)
-// You can define these interfaces/types in separate files (e.g., Paddle.ts, Ball.ts)
-// and import them here once they are created.
+// backend/src/game/Game.ts
 
-interface Paddle {
-  // Temporary properties - will be defined in detail in To-do 1.2.2
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  // We might add socketId or playerId here later
-}
+import { Paddle } from './Paddle'; // Import the Paddle class
+import { Ball } from './Ball';     // Import the Ball class
 
-interface Ball {
-  // Temporary properties - will be defined in detail in To-do 1.2.3
-  x: number;
-  y: number;
-  radius: number;
-  velocityX: number;
-  velocityY: number;
-}
+// Game constants - these could be made configurable later
+const GAME_WIDTH = 800;
+const GAME_HEIGHT = 600;
+const PADDLE_WIDTH = 10;
+const PADDLE_HEIGHT = 100;
+const PADDLE_SPEED = 10; // Speed for paddle movement (can be adjusted)
+const BALL_RADIUS = 7;
+const INITIAL_BALL_SPEED_X = 5;
+const INITIAL_BALL_SPEED_Y = 5;
 
 interface Score {
   player1: number;
@@ -26,36 +19,60 @@ interface Score {
 }
 
 export class Game {
-  // Properties to hold game state
-  public paddle1: Paddle; // Or some PaddleType
-  public paddle2: Paddle; // Or some PaddleType
-  public ball: Ball;     // Or some BallType
+  public paddle1: Paddle;
+  public paddle2: Paddle;
+  public ball: Ball;
   public score: Score;
-  // You might also want to define game area dimensions here
-  // public gameAreaWidth: number;
-  // public gameAreaHeight: number;
+  public gameAreaWidth: number;
+  public gameAreaHeight: number;
 
   constructor() {
-    // Initialize the game state
-    // We'll set up initial positions and properties in To-do 1.2.4
-    // For now, let's just initialize with some placeholder or default values
+    this.gameAreaWidth = GAME_WIDTH;
+    this.gameAreaHeight = GAME_HEIGHT;
 
-    // Example placeholder initializations (actual values will be set in 1.2.4)
-    this.paddle1 = { x: 0, y: 0, width: 0, height: 0 }; // Placeholder
-    this.paddle2 = { x: 0, y: 0, width: 0, height: 0 }; // Placeholder
-    this.ball = { x: 0, y: 0, radius: 0, velocityX: 0, velocityY: 0 }; // Placeholder
+    // Initialize Paddles
+    // Paddle 1 (left)
+    const paddle1X = PADDLE_WIDTH; // A bit of offset from the left wall
+    const paddle1Y = (this.gameAreaHeight - PADDLE_HEIGHT) / 2; // Centered vertically
+    this.paddle1 = new Paddle(paddle1X, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    // Paddle 2 (right)
+    const paddle2X = this.gameAreaWidth - PADDLE_WIDTH * 2; // A bit of offset from the right wall
+    const paddle2Y = (this.gameAreaHeight - PADDLE_HEIGHT) / 2; // Centered vertically
+    this.paddle2 = new Paddle(paddle2X, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    // Initialize Ball
+    const ballX = this.gameAreaWidth / 2;  // Center of the game area
+    const ballY = this.gameAreaHeight / 2; // Center of the game area
+
+    // Determine initial ball direction randomly (optional, or just pick one)
+    // For example, can serve to player 1 or player 2
+    const randomDirectionX = Math.random() < 0.5 ? -1 : 1;
+    const randomDirectionY = Math.random() < 0.5 ? -1 : 1;
+
+    this.ball = new Ball(
+      ballX,
+      ballY,
+      BALL_RADIUS,
+      INITIAL_BALL_SPEED_X * randomDirectionX, // Initial horizontal velocity
+      INITIAL_BALL_SPEED_Y * randomDirectionY  // Initial vertical velocity
+    );
+
+    // Initialize Score
     this.score = { player1: 0, player2: 0 };
 
-    // this.gameAreaWidth = 800; // Example
-    // this.gameAreaHeight = 600; // Example
-
-    console.log('New Game instance created');
+    console.log('New Game instance created and initialized.');
+    // You can log the initial state for debugging if you want:
+    // console.log('Initial Paddle 1:', this.paddle1);
+    // console.log('Initial Paddle 2:', this.paddle2);
+    // console.log('Initial Ball:', this.ball);
+    // console.log('Initial Score:', this.score);
   }
 
-  // Game logic methods will be added here later, such as:
-  // updateBallPosition()
+  // Game logic methods will be added here in subsequent tasks:
+  // updateBallPosition() -> To-do 1.2.5
   // checkCollisions()
   // updateScore()
   // resetBall()
-  // getGameState()
+  // getGameState() -> To-do 1.2.7
 }
