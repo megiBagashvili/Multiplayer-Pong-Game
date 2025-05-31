@@ -1,9 +1,6 @@
-// backend/src/game/Game.ts
-
 import { Paddle } from './Paddle';
 import { Ball } from './Ball';
 
-// Game constants (ensure these are still here)
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 const PADDLE_WIDTH = 10;
@@ -17,7 +14,6 @@ interface Score {
   player2: number;
 }
 
-// Define a type for our game state for clarity
 export interface GameState {
   paddle1: { x: number; y: number; width: number; height: number };
   paddle2: { x: number; y: number; width: number; height: number };
@@ -77,7 +73,7 @@ export class Game {
    * Returns a snapshot of the current game state.
    * This will be useful for sending updates to clients.
    */
-  public getGameState(): GameState { // Use the GameState interface for the return type
+  public getGameState(): GameState {
     return {
       paddle1: {
         x: this.paddle1.x,
@@ -96,13 +92,11 @@ export class Game {
         y: this.ball.y,
         radius: this.ball.radius,
       },
-      score: { ...this.score }, // Shallow copy the score object
+      score: { ...this.score },
       gameArea: {
         width: this.gameAreaWidth,
         height: this.gameAreaHeight,
       }
     };
   }
-
-  // Other game logic methods will follow
 }

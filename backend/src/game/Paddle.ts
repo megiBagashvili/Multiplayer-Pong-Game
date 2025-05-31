@@ -1,18 +1,16 @@
-// backend/src/game/Paddle.ts
-
 export class Paddle {
   public x: number;
   public y: number;
   public width: number;
   public height: number;
-  public dy: number; // Velocity or speed of the paddle in the y-direction
+  public dy: number; 
 
   constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.dy = 0; // Initially paddle is stationary, or you can set a default speed
+    this.dy = 0;
   }
 
   /**
@@ -22,10 +20,7 @@ export class Paddle {
    * @param gameAreaHeight The height of the game area.
    */
   public updatePosition(gameAreaHeight: number): void {
-    // Update y position based on its velocity dy
     this.y += this.dy;
-
-    // Keep the paddle within the game boundaries
     if (this.y < 0) {
       this.y = 0;
     } else if (this.y + this.height > gameAreaHeight) {
@@ -38,7 +33,7 @@ export class Paddle {
    * @param speed The speed at which to move the paddle.
    */
   public moveUp(speed: number): void {
-    this.dy = -Math.abs(speed); // Ensure speed is negative for upward movement
+    this.dy = -Math.abs(speed);
   }
 
   /**
@@ -46,7 +41,7 @@ export class Paddle {
    * @param speed The speed at which to move the paddle.
    */
   public moveDown(speed: number): void {
-    this.dy = Math.abs(speed); // Ensure speed is positive for downward movement
+    this.dy = Math.abs(speed);
   }
 
   /**
@@ -55,6 +50,4 @@ export class Paddle {
   public stop(): void {
     this.dy = 0;
   }
-
-  // You might add other methods later, e.g., for handling specific player input
 }

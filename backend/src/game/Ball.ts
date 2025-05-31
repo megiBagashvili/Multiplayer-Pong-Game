@@ -12,10 +12,6 @@ export class Ball {
     this.velocityX = velocityX;
     this.velocityY = velocityY;
   }
-
-  /**
-   * Updates the ball's position based on its current velocity.
-   */
   public updatePosition(): void {
     this.x += this.velocityX;
     this.y += this.velocityY;
@@ -35,9 +31,4 @@ export class Ball {
     this.velocityX = newVelocityX;
     this.velocityY = newVelocityY;
   }
-
-  // Collision methods (e.g., with walls, paddles) will likely be handled
-  // in the Game class or a dedicated physics engine module,
-  // but you could add simple bounce logic here if desired for specific scenarios.
-  // For now, updatePosition is the primary focus for movement.
 }
