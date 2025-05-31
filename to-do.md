@@ -30,7 +30,7 @@
         }
         ```
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.3: Basic Express Server Setup:**
+-   [x] **To-do 1.1.3: Basic Express Server Setup:**
     -   Create a new directory `backend/src`.
     -   Create a file `backend/src/server.ts`.
     -   Implement a basic Express server that listens on a specified port (e.g., 3001). Include a simple default route (e.g., `/`) that sends a "Ping Pong Server is running!" message.
