@@ -44,11 +44,11 @@
     -   Make the HTTP server listen instead of the Express app directly.
     -   Install `@types/node` if you haven't already: `npm install @types/node --save-dev`.
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.5: Test Basic Socket Connection (Manual):**
+-   [x] **To-do 1.1.5: Test Basic Socket Connection (Manual):**
     -   Run the backend server using `npm run dev`.
     -   On the frontend (even a basic HTML page with Socket.IO client included via CDN for now), try to establish a connection to the backend server. Observe the console logs on the backend when a connection and disconnection occur.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 1.1.6: Merge Backend Setup:**
+-   [x] **To-do 1.1.6: Merge Backend Setup:**
     -   Create a Pull Request (PR) from the `feature/backend-setup` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
