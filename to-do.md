@@ -71,7 +71,7 @@
 -   [x] **To-do 1.2.5: Implement Ball Movement Logic:**
     -   In the `Game` class, implement a method (e.g., `updateBall()`) that updates the ball's `x` and `y` coordinates based on its `velocityX` and `velocityY`.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.6: Implement Basic Wall Collision Detection:**
+-   [x] **To-do 1.2.6: Implement Basic Wall Collision Detection:**
     -   In the `updateBall()` method, add logic to detect collisions with the top and bottom walls of the game area. When a collision occurs, the `velocityY` of the ball should be reversed. Assume a defined height for the game area.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
 -   [ ] **To-do 1.2.7: Basic Game State Representation (Console Logging):**

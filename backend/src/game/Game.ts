@@ -3,12 +3,12 @@
 import { Paddle } from './Paddle';
 import { Ball } from './Ball';
 
-// Game constants - (ensure these are still here from the previous step)
+// Game constants (ensure these are still here)
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 const PADDLE_WIDTH = 10;
 const PADDLE_HEIGHT = 100;
-// const PADDLE_SPEED = 10; // We'll use this when handling paddle movement
+// const PADDLE_SPEED = 10;
 const BALL_RADIUS = 7;
 const INITIAL_BALL_SPEED_X = 5;
 const INITIAL_BALL_SPEED_Y = 5;
@@ -30,6 +30,7 @@ export class Game {
     this.gameAreaWidth = GAME_WIDTH;
     this.gameAreaHeight = GAME_HEIGHT;
 
+    // ... (paddle and ball initialization code from previous steps remains the same)
     const paddle1X = PADDLE_WIDTH;
     const paddle1Y = (this.gameAreaHeight - PADDLE_HEIGHT) / 2;
     this.paddle1 = new Paddle(paddle1X, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -55,17 +56,28 @@ export class Game {
     console.log('New Game instance created and initialized.');
   }
 
-  /**
-   * Updates the ball's position by calling its own updatePosition method.
-   */
   public updateBall(): void {
-    this.ball.updatePosition();
-    // In the next step (1.2.6), we'll add wall collision logic here.
+    this.ball.updatePosition(); // Ball updates its own x, y based on its velocity
+
+    // Wall Collision Detection (Top and Bottom)
+    // Check for collision with the top wall
+    if (this.ball.y - this.ball.radius < 0) {
+      this.ball.y = this.ball.radius; // Reposition ball to be exactly at the wall
+      this.ball.velocityY *= -1; // Reverse the vertical velocity
+    }
+    // Check for collision with the bottom wall
+    else if (this.ball.y + this.ball.radius > this.gameAreaHeight) {
+      this.ball.y = this.gameAreaHeight - this.ball.radius; // Reposition ball
+      this.ball.velocityY *= -1; // Reverse the vertical velocity
+    }
+
+    // Note: Side wall collisions (left and right) will be handled later
+    // as they usually result in scoring points, not just a bounce.
   }
 
   // Other game logic methods will follow:
-  // checkCollisions()
-  // updateScore()
+  // checkCollisions() (for ball-paddle)
+  // updateScore() (when ball passes side walls)
   // resetBall()
   // getGameState()
 }
