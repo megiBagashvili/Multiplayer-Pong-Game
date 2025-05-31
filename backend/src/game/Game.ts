@@ -8,7 +8,6 @@ const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 const PADDLE_WIDTH = 10;
 const PADDLE_HEIGHT = 100;
-// const PADDLE_SPEED = 10;
 const BALL_RADIUS = 7;
 const INITIAL_BALL_SPEED_X = 5;
 const INITIAL_BALL_SPEED_Y = 5;
@@ -17,6 +16,16 @@ interface Score {
   player1: number;
   player2: number;
 }
+
+// Define a type for our game state for clarity
+export interface GameState {
+  paddle1: { x: number; y: number; width: number; height: number };
+  paddle2: { x: number; y: number; width: number; height: number };
+  ball: { x: number; y: number; radius: number };
+  score: Score;
+  gameArea: { width: number; height: number };
+}
+
 
 export class Game {
   public paddle1: Paddle;
@@ -30,7 +39,6 @@ export class Game {
     this.gameAreaWidth = GAME_WIDTH;
     this.gameAreaHeight = GAME_HEIGHT;
 
-    // ... (paddle and ball initialization code from previous steps remains the same)
     const paddle1X = PADDLE_WIDTH;
     const paddle1Y = (this.gameAreaHeight - PADDLE_HEIGHT) / 2;
     this.paddle1 = new Paddle(paddle1X, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -50,34 +58,51 @@ export class Game {
       INITIAL_BALL_SPEED_X * randomDirectionX,
       INITIAL_BALL_SPEED_Y * randomDirectionY
     );
-
     this.score = { player1: 0, player2: 0 };
-
     console.log('New Game instance created and initialized.');
   }
 
   public updateBall(): void {
-    this.ball.updatePosition(); // Ball updates its own x, y based on its velocity
-
-    // Wall Collision Detection (Top and Bottom)
-    // Check for collision with the top wall
+    this.ball.updatePosition();
     if (this.ball.y - this.ball.radius < 0) {
-      this.ball.y = this.ball.radius; // Reposition ball to be exactly at the wall
-      this.ball.velocityY *= -1; // Reverse the vertical velocity
+      this.ball.y = this.ball.radius;
+      this.ball.velocityY *= -1;
+    } else if (this.ball.y + this.ball.radius > this.gameAreaHeight) {
+      this.ball.y = this.gameAreaHeight - this.ball.radius;
+      this.ball.velocityY *= -1;
     }
-    // Check for collision with the bottom wall
-    else if (this.ball.y + this.ball.radius > this.gameAreaHeight) {
-      this.ball.y = this.gameAreaHeight - this.ball.radius; // Reposition ball
-      this.ball.velocityY *= -1; // Reverse the vertical velocity
-    }
-
-    // Note: Side wall collisions (left and right) will be handled later
-    // as they usually result in scoring points, not just a bounce.
   }
 
-  // Other game logic methods will follow:
-  // checkCollisions() (for ball-paddle)
-  // updateScore() (when ball passes side walls)
-  // resetBall()
-  // getGameState()
+  /**
+   * Returns a snapshot of the current game state.
+   * This will be useful for sending updates to clients.
+   */
+  public getGameState(): GameState { // Use the GameState interface for the return type
+    return {
+      paddle1: {
+        x: this.paddle1.x,
+        y: this.paddle1.y,
+        width: this.paddle1.width,
+        height: this.paddle1.height,
+      },
+      paddle2: {
+        x: this.paddle2.x,
+        y: this.paddle2.y,
+        width: this.paddle2.width,
+        height: this.paddle2.height,
+      },
+      ball: {
+        x: this.ball.x,
+        y: this.ball.y,
+        radius: this.ball.radius,
+      },
+      score: { ...this.score }, // Shallow copy the score object
+      gameArea: {
+        width: this.gameAreaWidth,
+        height: this.gameAreaHeight,
+      }
+    };
+  }
+
+  // Other game logic methods will follow
 }
