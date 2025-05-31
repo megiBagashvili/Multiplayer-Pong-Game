@@ -68,7 +68,7 @@
 -   [x] **To-do 1.2.4: Initialize Game State in `Game` Class:**
     -   In the `Game` class in `backend/src/game/Game.ts`, initialize the positions and properties of the two paddles and the ball. Define initial scores for both players (e.g., 0). Determine the initial direction and speed of the ball.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.5: Implement Ball Movement Logic:**
+-   [x] **To-do 1.2.5: Implement Ball Movement Logic:**
     -   In the `Game` class, implement a method (e.g., `updateBall()`) that updates the ball's `x` and `y` coordinates based on its `velocityX` and `velocityY`.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
 -   [ ] **To-do 1.2.6: Implement Basic Wall Collision Detection:**
