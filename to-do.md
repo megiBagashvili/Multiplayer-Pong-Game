@@ -4,14 +4,14 @@
 
 ### Chunk 1.1: Backend Project Initialization & Socket.IO Setup
 
--   [ ] **To-do 1.1.1: Initialize Backend Project:**
+-   [x] **To-do 1.1.1: Initialize Backend Project:**
     -   Navigate to the `backend` folder in your project directory in the terminal.
     -   Run `npm init -y` to create a `package.json` file with default settings.
     -   Install essential backend dependencies: `npm install express cors socket.io @types/express @types/cors @types/socket.io --save`.
     -   Install development dependencies for TypeScript: `npm install typescript ts-node nodemon @types/node --save-dev`.
     -   Initialize TypeScript configuration: Run `npx tsc --init`.
     -   **GitHub Action:** Create a new branch named `feature/backend-setup`.
--   [ ] **To-do 1.1.2: Configure `tsconfig.json`:**
+-   [x] **To-do 1.1.2: Configure `tsconfig.json`:**
     -   Open `backend/tsconfig.json` and adjust the compiler options as follows (or as per your preference):
         ```json
         {
@@ -30,13 +30,13 @@
         }
         ```
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.3: Basic Express Server Setup:**
+-   [x] **To-do 1.1.3: Basic Express Server Setup:**
     -   Create a new directory `backend/src`.
     -   Create a file `backend/src/server.ts`.
     -   Implement a basic Express server that listens on a specified port (e.g., 3001). Include a simple default route (e.g., `/`) that sends a "Ping Pong Server is running!" message.
     -   Add the following script to the `scripts` section of your `backend/package.json`: `"dev": "nodemon src/server.ts"`.
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.4: Integrate Socket.IO:**
+-   [x] **To-do 1.1.4: Integrate Socket.IO:**
     -   In `backend/src/server.ts`, import `http` and `socket.io`.
     -   Create an HTTP server instance using your Express app.
     -   Initialize a Socket.IO server instance, attaching it to the HTTP server.
@@ -44,11 +44,11 @@
     -   Make the HTTP server listen instead of the Express app directly.
     -   Install `@types/node` if you haven't already: `npm install @types/node --save-dev`.
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.5: Test Basic Socket Connection (Manual):**
+-   [x] **To-do 1.1.5: Test Basic Socket Connection (Manual):**
     -   Run the backend server using `npm run dev`.
     -   On the frontend (even a basic HTML page with Socket.IO client included via CDN for now), try to establish a connection to the backend server. Observe the console logs on the backend when a connection and disconnection occur.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 1.1.6: Merge Backend Setup:**
+-   [x] **To-do 1.1.6: Merge Backend Setup:**
     -   Create a Pull Request (PR) from the `feature/backend-setup` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
