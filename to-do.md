@@ -59,10 +59,10 @@
     -   Create a file `backend/src/game/Game.ts`.
     -   Define a `Game` class that will encapsulate the state and logic of a single game instance. This class should hold information about the paddles, ball, and score.
     -   **GitHub Action:** Create a new branch named `feature/backend-game-logic` based on `main`.
--   [ ] **To-do 1.2.2: Define `Paddle` Interface/Class:**
+-   [x] **To-do 1.2.2: Define `Paddle` Interface/Class:**
     -   In `backend/src/game/Paddle.ts`, define an interface `Paddle` or a class `Paddle`. It should have properties like `x`, `y`, `width`, `height`. Consider methods for updating the paddle's `y` position.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
--   [ ] **To-do 1.2.3: Define `Ball` Interface/Class:**
+-   [x] **To-do 1.2.3: Define `Ball` Interface/Class:**
     -   In `backend/src/game/Ball.ts`, define an interface `Ball` or a class `Ball`. It should have properties like `x`, `y`, `radius`, `velocityX`, `velocityY`. Consider a method for updating the ball's position based on its velocity.
     -   **GitHub Action:** Commit the changes to `feature/backend-game-logic`.
 -   [ ] **To-do 1.2.4: Initialize Game State in `Game` Class:**
