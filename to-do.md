@@ -36,7 +36,7 @@
     -   Implement a basic Express server that listens on a specified port (e.g., 3001). Include a simple default route (e.g., `/`) that sends a "Ping Pong Server is running!" message.
     -   Add the following script to the `scripts` section of your `backend/package.json`: `"dev": "nodemon src/server.ts"`.
     -   **GitHub Action:** Commit the changes to `feature/backend-setup`.
--   [ ] **To-do 1.1.4: Integrate Socket.IO:**
+-   [x] **To-do 1.1.4: Integrate Socket.IO:**
     -   In `backend/src/server.ts`, import `http` and `socket.io`.
     -   Create an HTTP server instance using your Express app.
     -   Initialize a Socket.IO server instance, attaching it to the HTTP server.
