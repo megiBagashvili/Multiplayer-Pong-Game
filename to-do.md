@@ -54,7 +54,7 @@
 
 ### Chunk 1.2: Core Game Logic - Ball and Paddle Entities
 
--   [ ] **To-do 1.2.1: Create `Game` Class:**
+-   [x] **To-do 1.2.1: Create `Game` Class:**
     -   Create a new directory `backend/src/game`.
     -   Create a file `backend/src/game/Game.ts`.
     -   Define a `Game` class that will encapsulate the state and logic of a single game instance. This class should hold information about the paddles, ball, and score.
