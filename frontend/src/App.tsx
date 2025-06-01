@@ -1,8 +1,11 @@
+// frontend/src/App.tsx
+
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { io, Socket } from 'socket.io-client';
 import { GameState, PaddleState, BallState, ScoreState, GameAreaState } from './types/GameState';
+import GameCanvas from './components/GameCanvas';
 
 const SOCKET_SERVER_URL = 'http://localhost:3001';
 
@@ -49,62 +52,21 @@ function App() {
     };
   }, []);
 
-  // Define styles (can be moved to a separate CSS file later or refined)
-  // We define them here so they can access gameState if needed, though for fixed sizes it's not strictly necessary.
-  // For dynamic properties (like left, top), they need to be applied directly in the JSX or be functions.
-
-  const gameAreaStyles: React.CSSProperties = gameState ? {
-    width: `${gameState.gameArea.width}px`,
-    height: `${gameState.gameArea.height}px`,
-    backgroundColor: 'black',
-    position: 'relative',
-    border: '2px solid white',
-    margin: '20px auto',
-  } : {};
-
-  const getPaddleStyles = (paddle: PaddleState): React.CSSProperties => ({
-    position: 'absolute',
-    left: `${paddle.x}px`,
-    top: `${paddle.y}px`,
-    width: `${paddle.width}px`,
-    height: `${paddle.height}px`,
-    backgroundColor: 'lightgray',
-  });
-
-  const getBallStyles = (ball: BallState): React.CSSProperties => ({
-    position: 'absolute',
-    left: `${ball.x - ball.radius}px`,
-    top: `${ball.y - ball.radius}px`,
-    width: `${ball.radius * 2}px`,
-    height: `${ball.radius * 2}px`,
-    backgroundColor: 'white',
-    borderRadius: '50%', // Makes it a circle
-  });
-
-
   return (
     <div className="App">
       <header className="App-header">
-        {/* You can keep or remove the default React logo and text */}
         <img src={logo} className="App-logo" alt="logo" />
         <p>Ping Pong Game</p>
 
         {gameState ? (
           <>
-            {/* Game Score Display */}
+            {/* Game Score Display - can remain here or be part of a HUD component later */}
             <div style={{ marginBottom: '10px', color: 'white', fontSize: '24px' }}>
               Player 1: {gameState.score.player1} | Player 2: {gameState.score.player2}
             </div>
 
-            {/* Game Area */}
-            <div style={gameAreaStyles}>
-              {/* Paddle 1 */}
-              <div style={getPaddleStyles(gameState.paddle1)}></div>
-              {/* Paddle 2 */}
-              <div style={getPaddleStyles(gameState.paddle2)}></div>
-              {/* Ball */}
-              <div style={getBallStyles(gameState.ball)}></div>
-            </div>
+            {/* Render the GameCanvas component and pass the gameState */}
+            <GameCanvas gameState={gameState} />
           </>
         ) : (
           <p>Loading game state or connecting...</p>
