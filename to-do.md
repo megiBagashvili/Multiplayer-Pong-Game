@@ -92,7 +92,7 @@
     -   `cd frontend`.
     -   Install the Socket.IO client library: `npm install socket.io-client --save`.
     -   **GitHub Action:** Create a new branch named `feature/frontend-setup` based on `main`.
--   [ ] **To-do 2.1.2: Define Frontend Game State Interface:**
+-   [x] **To-do 2.1.2: Define Frontend Game State Interface:**
     -   Create a new directory `frontend/src/types`.
     -   Create a file `frontend/src/types/GameState.ts`.
     -   Define an interface `GameState` that mirrors the game state object you plan to send from the backend (paddle positions, ball position, scores).
