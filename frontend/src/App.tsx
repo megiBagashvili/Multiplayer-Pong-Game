@@ -1,5 +1,3 @@
-// frontend/src/App.tsx
-
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -28,7 +26,6 @@ function App() {
 
   useEffect(() => {
     const socket: Socket = io(SOCKET_SERVER_URL);
-
     socket.on('connect', () => {
       console.log(`Frontend: Successfully connected to Socket.IO server! Socket ID: ${socket.id}`);
     });
@@ -41,7 +38,6 @@ function App() {
     socket.on('gameState', (newState: GameState) => {
       setGameState(newState);
     });
-
     return () => {
       console.log('Frontend: Disconnecting Socket.IO socket...');
       socket.off('connect');
@@ -60,12 +56,11 @@ function App() {
 
         {gameState ? (
           <>
-            {/* Game Score Display - can remain here or be part of a HUD component later */}
-            <div style={{ marginBottom: '10px', color: 'white', fontSize: '24px' }}>
+            {/* Game Score Display - now uses a CSS class */}
+            <div className="score-display"> {/* Changed from inline style to className */}
               Player 1: {gameState.score.player1} | Player 2: {gameState.score.player2}
             </div>
 
-            {/* Render the GameCanvas component and pass the gameState */}
             <GameCanvas gameState={gameState} />
           </>
         ) : (

@@ -147,13 +147,13 @@
     -   Style the game area, paddles, and ball to make them visually distinct and appropriately sized. Use CSS properties like `width`, `height`, `backgroundColor`, `borderRadius`, `position: absolute`, etc.
     -   Import and apply the styles to the `GameCanvas` component.
     -   **GitHub Action:** Commit the changes to `feature/frontend-ui`.
--   [ ] **To-do 2.3.3: Render Scores:**
+-   [x] **To-do 2.3.3: Render Scores:**
     -   Add state variables in `App.tsx` to hold the scores of both players.
     -   Update these score states when the `gameState` from the backend includes score information.
     -   Render the scores above or below the `GameCanvas` in `App.tsx`.
     -   Add basic styling for the score display.
     -   **GitHub Action:** Commit the changes to `feature/frontend-ui`.
--   [ ] **To-do 2.3.4: Merge Basic Frontend UI:**
+-   [x] **To-do 2.3.4: Merge Basic Frontend UI:**
     -   Create a Pull Request (PR) from the `feature/frontend-ui` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
