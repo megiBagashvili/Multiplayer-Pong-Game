@@ -52,7 +52,7 @@ httpServer.listen(PORT, () => {
 
     const gameState = game.getGameState();
     // For now, just log it to the server console
-    console.log('Current Game State:', JSON.stringify(gameState, null, 2));
+    // console.log('Current Game State:', JSON.stringify(gameState, null, 2));
 
     // Later, instead of console logging, we'll emit this to connected clients:
     // io.emit('gameState', gameState);

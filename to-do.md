@@ -86,28 +86,28 @@
 
 ### Chunk 2.1: Frontend Project Initialization & Socket.IO Client Setup
 
--   [ ] **To-do 2.1.1: Initialize Frontend Project:**
+-   [x] **To-do 2.1.1: Initialize Frontend Project:**
     -   Navigate to the project root in the terminal.
     -   Run `npx create-react-app frontend --template typescript`.
     -   `cd frontend`.
     -   Install the Socket.IO client library: `npm install socket.io-client --save`.
     -   **GitHub Action:** Create a new branch named `feature/frontend-setup` based on `main`.
--   [ ] **To-do 2.1.2: Define Frontend Game State Interface:**
+-   [x] **To-do 2.1.2: Define Frontend Game State Interface:**
     -   Create a new directory `frontend/src/types`.
     -   Create a file `frontend/src/types/GameState.ts`.
     -   Define an interface `GameState` that mirrors the game state object you plan to send from the backend (paddle positions, ball position, scores).
     -   **GitHub Action:** Commit the changes to `feature/frontend-setup`.
--   [ ] **To-do 2.1.3: Basic Socket.IO Client Connection:**
+-   [x] **To-do 2.1.3: Basic Socket.IO Client Connection:**
     -   In `frontend/src/App.tsx`, import the `io` function from `socket.io-client`.
     -   Establish a connection to your backend server (e.g., `const socket = io('http://localhost:3001');`).
     -   Implement basic event listeners for `connect` and `disconnect` events, logging messages to the console.
     -   **GitHub Action:** Commit the changes to `feature/frontend-setup`.
--   [ ] **To-do 2.1.4: Test Frontend Socket Connection (Manual):**
+-   [x] **To-do 2.1.4: Test Frontend Socket Connection (Manual):**
     -   Start both the backend (`npm run dev` in `backend`) and the frontend (`npm start` in `frontend`).
     -   Open your browser and navigate to the frontend URL (usually `http://localhost:3000`).
     -   Observe the console logs in both the browser (frontend) and the terminal (backend) to verify successful connection and disconnection events.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 2.1.5: Merge Frontend Setup:**
+-   [x] **To-do 2.1.5: Merge Frontend Setup:**
     -   Create a Pull Request (PR) from the `feature/frontend-setup` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
