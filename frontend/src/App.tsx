@@ -1,5 +1,3 @@
-// frontend/src/App.tsx
-
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -8,9 +6,6 @@ import { GameState, PaddleState, BallState, ScoreState, GameAreaState } from './
 
 const SOCKET_SERVER_URL = 'http://localhost:3001';
 
-// Define an initial state for the game.
-// These values should ideally match or be close to the backend's initial state
-// to avoid a jarring update on first connection.
 const initialPaddle1State: PaddleState = { x: 10, y: 250, width: 10, height: 100 };
 const initialPaddle2State: PaddleState = { x: 780, y: 250, width: 10, height: 100 };
 const initialBallState: BallState = { x: 400, y: 300, radius: 7 };
@@ -26,81 +21,94 @@ const initialGameStateData: GameState = {
 };
 
 function App() {
-  // State variable to hold the current game state
   const [gameState, setGameState] = useState<GameState | null>(initialGameStateData);
-  // We can also have a loading/connection status state if needed
-  // const [isConnected, setIsConnected] = useState<boolean>(false);
-
 
   useEffect(() => {
     const socket: Socket = io(SOCKET_SERVER_URL);
 
     socket.on('connect', () => {
       console.log(`Frontend: Successfully connected to Socket.IO server! Socket ID: ${socket.id}`);
-      // setIsConnected(true);
     });
-
     socket.on('disconnect', (reason) => {
       console.log(`Frontend: Disconnected from Socket.IO server. Reason: ${reason}`);
-      // setIsConnected(false);
     });
-
     socket.on('connect_error', (error) => {
       console.error('Frontend: Socket.IO connection error:', error);
-      // setIsConnected(false);
     });
-
-    // === New: Event listener for 'gameState' ===
     socket.on('gameState', (newState: GameState) => {
-      // console.log('Frontend: Received gameState update:', newState); // For debugging
-      setGameState(newState); // Update the frontend's state with the received data
+      setGameState(newState);
     });
-    // === End New ===
 
-    // Cleanup on component unmount
     return () => {
       console.log('Frontend: Disconnecting Socket.IO socket...');
-      // It's good practice to remove specific listeners before disconnecting
       socket.off('connect');
       socket.off('disconnect');
       socket.off('connect_error');
-      socket.off('gameState'); // Make sure to turn off the gameState listener
+      socket.off('gameState');
       socket.disconnect();
     };
-  }, []); // Empty dependency array: runs once on mount, cleans up on unmount
+  }, []);
 
-  // For now, we can log the gameState to see it change (optional)
-  // useEffect(() => {
-  //   if (gameState) {
-  //     console.log("Frontend: Current game state in component:", gameState);
-  //   }
-  // }, [gameState]);
+  // Define styles (can be moved to a separate CSS file later or refined)
+  // We define them here so they can access gameState if needed, though for fixed sizes it's not strictly necessary.
+  // For dynamic properties (like left, top), they need to be applied directly in the JSX or be functions.
+
+  const gameAreaStyles: React.CSSProperties = gameState ? {
+    width: `${gameState.gameArea.width}px`,
+    height: `${gameState.gameArea.height}px`,
+    backgroundColor: 'black',
+    position: 'relative',
+    border: '2px solid white',
+    margin: '20px auto',
+  } : {};
+
+  const getPaddleStyles = (paddle: PaddleState): React.CSSProperties => ({
+    position: 'absolute',
+    left: `${paddle.x}px`,
+    top: `${paddle.y}px`,
+    width: `${paddle.width}px`,
+    height: `${paddle.height}px`,
+    backgroundColor: 'lightgray',
+  });
+
+  const getBallStyles = (ball: BallState): React.CSSProperties => ({
+    position: 'absolute',
+    left: `${ball.x - ball.radius}px`,
+    top: `${ball.y - ball.radius}px`,
+    width: `${ball.radius * 2}px`,
+    height: `${ball.radius * 2}px`,
+    backgroundColor: 'white',
+    borderRadius: '50%', // Makes it a circle
+  });
+
 
   return (
     <div className="App">
       <header className="App-header">
+        {/* You can keep or remove the default React logo and text */}
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Socket.IO connection is being managed. Check console for logs.
-        </p>
-        {/* In the next step, we will render elements based on gameState */}
-        {gameState && (
-          <div>
-            <p>Ball X: {gameState.ball.x}, Ball Y: {gameState.ball.y}</p>
-            <p>Score: P1: {gameState.score.player1} - P2: {gameState.score.player2}</p>
-          </div>
+        <p>Ping Pong Game</p>
+
+        {gameState ? (
+          <>
+            {/* Game Score Display */}
+            <div style={{ marginBottom: '10px', color: 'white', fontSize: '24px' }}>
+              Player 1: {gameState.score.player1} | Player 2: {gameState.score.player2}
+            </div>
+
+            {/* Game Area */}
+            <div style={gameAreaStyles}>
+              {/* Paddle 1 */}
+              <div style={getPaddleStyles(gameState.paddle1)}></div>
+              {/* Paddle 2 */}
+              <div style={getPaddleStyles(gameState.paddle2)}></div>
+              {/* Ball */}
+              <div style={getBallStyles(gameState.ball)}></div>
+            </div>
+          </>
+        ) : (
+          <p>Loading game state or connecting...</p>
         )}
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );

@@ -126,11 +126,11 @@
 -   [ ] **To-do 2.2.3: Basic Rendering of Game State on Frontend:**
     -   In `frontend/src/App.tsx`, render the basic elements of the game (e.g., two `div`s representing paddles and a `div` representing the ball) based on the `x` and `y` coordinates received in the `GameState`. Use inline styles for now for simplicity.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
--   [ ] **To-do 2.2.4: Test Real-Time Synchronization (Manual):**
+-   [x] **To-do 2.2.4: Test Real-Time Synchronization (Manual):**
     -   Run both the backend and frontend.
     -   Observe if the positions of the paddles and the ball (even if not visually accurate yet) are being updated in the browser based on the backend's game logic. You might need to open two browser windows to simulate two players (though paddle control isn't implemented yet).
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 2.2.5: Merge Real-Time Synchronization:**
+-   [x] **To-do 2.2.5: Merge Real-Time Synchronization:**
     -   Create a Pull Request (PR) from the `feature/realtime-sync` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
