@@ -97,7 +97,7 @@
     -   Create a file `frontend/src/types/GameState.ts`.
     -   Define an interface `GameState` that mirrors the game state object you plan to send from the backend (paddle positions, ball position, scores).
     -   **GitHub Action:** Commit the changes to `feature/frontend-setup`.
--   [ ] **To-do 2.1.3: Basic Socket.IO Client Connection:**
+-   [x] **To-do 2.1.3: Basic Socket.IO Client Connection:**
     -   In `frontend/src/App.tsx`, import the `io` function from `socket.io-client`.
     -   Establish a connection to your backend server (e.g., `const socket = io('http://localhost:3001');`).
     -   Implement basic event listeners for `connect` and `disconnect` events, logging messages to the console.
