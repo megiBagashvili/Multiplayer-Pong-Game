@@ -113,12 +113,12 @@
 
 ### Chunk 2.2: Real-Time Game State Synchronization
 
--   [ ] **To-do 2.2.1: Emit Game State from Backend:**
+-   [x] **To-do 2.2.1: Emit Game State from Backend:**
     -   **GitHub Action:** Create a new branch named `feature/realtime-sync` based on `main`.
     -   In `backend/src/server.ts`, when a new client connects, emit the current game state to that client using a custom event name (e.g., `'gameState'`).
     -   Modify the periodic game logic update in `backend/src/server.ts` to emit the updated game state to all connected clients using `io.emit('gameState', gameState)`.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
--   [ ] **To-do 2.2.2: Receive and Update Game State on Frontend:**
+-   [x] **To-do 2.2.2: Receive and Update Game State on Frontend:**
     -   In `frontend/src/App.tsx`, create a state variable using `useState` to hold the current `GameState`. Initialize it with default values.
     -   In the `useEffect` hook (that runs once on component mount), set up an event listener for the `'gameState'` event from the backend.
     -   When the `'gameState'` event is received, update the frontend's state with the received data.
@@ -126,11 +126,11 @@
 -   [ ] **To-do 2.2.3: Basic Rendering of Game State on Frontend:**
     -   In `frontend/src/App.tsx`, render the basic elements of the game (e.g., two `div`s representing paddles and a `div` representing the ball) based on the `x` and `y` coordinates received in the `GameState`. Use inline styles for now for simplicity.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
--   [ ] **To-do 2.2.4: Test Real-Time Synchronization (Manual):**
+-   [x] **To-do 2.2.4: Test Real-Time Synchronization (Manual):**
     -   Run both the backend and frontend.
     -   Observe if the positions of the paddles and the ball (even if not visually accurate yet) are being updated in the browser based on the backend's game logic. You might need to open two browser windows to simulate two players (though paddle control isn't implemented yet).
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 2.2.5: Merge Real-Time Synchronization:**
+-   [x] **To-do 2.2.5: Merge Real-Time Synchronization:**
     -   Create a Pull Request (PR) from the `feature/realtime-sync` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
