@@ -118,7 +118,7 @@
     -   In `backend/src/server.ts`, when a new client connects, emit the current game state to that client using a custom event name (e.g., `'gameState'`).
     -   Modify the periodic game logic update in `backend/src/server.ts` to emit the updated game state to all connected clients using `io.emit('gameState', gameState)`.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
--   [ ] **To-do 2.2.2: Receive and Update Game State on Frontend:**
+-   [x] **To-do 2.2.2: Receive and Update Game State on Frontend:**
     -   In `frontend/src/App.tsx`, create a state variable using `useState` to hold the current `GameState`. Initialize it with default values.
     -   In the `useEffect` hook (that runs once on component mount), set up an event listener for the `'gameState'` event from the backend.
     -   When the `'gameState'` event is received, update the frontend's state with the received data.
