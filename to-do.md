@@ -123,7 +123,7 @@
     -   In the `useEffect` hook (that runs once on component mount), set up an event listener for the `'gameState'` event from the backend.
     -   When the `'gameState'` event is received, update the frontend's state with the received data.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
--   [ ] **To-do 2.2.3: Basic Rendering of Game State on Frontend:**
+-   [x] **To-do 2.2.3: Basic Rendering of Game State on Frontend:**
     -   In `frontend/src/App.tsx`, render the basic elements of the game (e.g., two `div`s representing paddles and a `div` representing the ball) based on the `x` and `y` coordinates received in the `GameState`. Use inline styles for now for simplicity.
     -   **GitHub Action:** Commit the changes to `feature/realtime-sync`.
 -   [x] **To-do 2.2.4: Test Real-Time Synchronization (Manual):**
@@ -136,13 +136,13 @@
 
 ### Chunk 2.3: Basic Frontend UI Structure and Styling
 
--   [ ] **To-do 2.3.1: Create Game Canvas Component:**
+-   [x] **To-do 2.3.1: Create Game Canvas Component:**
     -   **GitHub Action:** Create a new branch named `feature/frontend-ui` based on `main`.
     -   Create a new component `frontend/src/components/GameCanvas.tsx`. This component will be responsible for rendering the game elements.
     -   Move the rendering logic for the paddles and the ball from `App.tsx` to `GameCanvas.tsx`.
     -   `App.tsx` should now render the `GameCanvas` component and pass the `gameState` as props.
     -   **GitHub Action:** Commit the changes to `feature/frontend-ui`.
--   [ ] **To-do 2.3.2: Implement Basic Styling:**
+-   [x] **To-do 2.3.2: Implement Basic Styling:**
     -   Create a CSS file `frontend/src/components/GameCanvas.css`.
     -   Style the game area, paddles, and ball to make them visually distinct and appropriately sized. Use CSS properties like `width`, `height`, `backgroundColor`, `borderRadius`, `position: absolute`, etc.
     -   Import and apply the styles to the `GameCanvas` component.
