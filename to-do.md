@@ -86,7 +86,7 @@
 
 ### Chunk 2.1: Frontend Project Initialization & Socket.IO Client Setup
 
--   [ ] **To-do 2.1.1: Initialize Frontend Project:**
+-   [x] **To-do 2.1.1: Initialize Frontend Project:**
     -   Navigate to the project root in the terminal.
     -   Run `npx create-react-app frontend --template typescript`.
     -   `cd frontend`.
