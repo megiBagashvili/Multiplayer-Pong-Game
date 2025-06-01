@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #282c34; /* Default CRA dark background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,6 +22,17 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.score-display {
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: 'Consolas', 'Menlo', 'monospace';
+  padding: 5px 10px;
+  border: 1px solid #61dafb;
+  border-radius: 5px;
 }
 
 .App-link {
