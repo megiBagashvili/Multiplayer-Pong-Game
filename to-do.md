@@ -113,7 +113,7 @@
 
 ### Chunk 2.2: Real-Time Game State Synchronization
 
--   [ ] **To-do 2.2.1: Emit Game State from Backend:**
+-   [x] **To-do 2.2.1: Emit Game State from Backend:**
     -   **GitHub Action:** Create a new branch named `feature/realtime-sync` based on `main`.
     -   In `backend/src/server.ts`, when a new client connects, emit the current game state to that client using a custom event name (e.g., `'gameState'`).
     -   Modify the periodic game logic update in `backend/src/server.ts` to emit the updated game state to all connected clients using `io.emit('gameState', gameState)`.
