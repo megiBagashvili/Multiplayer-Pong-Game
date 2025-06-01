@@ -1,5 +1,3 @@
-// frontend/src/types/GameState.ts
-
 export interface PaddleState {
   x: number;
   y: number;

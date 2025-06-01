@@ -102,12 +102,12 @@
     -   Establish a connection to your backend server (e.g., `const socket = io('http://localhost:3001');`).
     -   Implement basic event listeners for `connect` and `disconnect` events, logging messages to the console.
     -   **GitHub Action:** Commit the changes to `feature/frontend-setup`.
--   [ ] **To-do 2.1.4: Test Frontend Socket Connection (Manual):**
+-   [x] **To-do 2.1.4: Test Frontend Socket Connection (Manual):**
     -   Start both the backend (`npm run dev` in `backend`) and the frontend (`npm start` in `frontend`).
     -   Open your browser and navigate to the frontend URL (usually `http://localhost:3000`).
     -   Observe the console logs in both the browser (frontend) and the terminal (backend) to verify successful connection and disconnection events.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 2.1.5: Merge Frontend Setup:**
+-   [x] **To-do 2.1.5: Merge Frontend Setup:**
     -   Create a Pull Request (PR) from the `feature/frontend-setup` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
