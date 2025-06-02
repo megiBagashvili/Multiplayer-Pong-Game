@@ -177,7 +177,7 @@
 
 ### Chunk 3.2: Backend Game Mechanics - Paddle Movement, Collision, Scoring
 
--   [ ] **To-do 3.2.1: Handle Paddle Movement on Backend:**
+-   [x] **To-do 3.2.1: Handle Paddle Movement on Backend:**
     -   **GitHub Action:** Create a new branch named `feature/backend-mechanics` based on `main`.
     -   In `backend/src/server.ts` (or a dedicated game management module), set up a Socket.IO event listener for the `'paddleMove'` event.
     -   Based on the received player and direction, update the `y` position of the corresponding paddle in the `Game` instance. Ensure the paddle stays within the game bounds.
