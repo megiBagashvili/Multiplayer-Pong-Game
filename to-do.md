@@ -187,7 +187,7 @@
     -   A collision occurs if the ball's horizontal position overlaps with the paddle's horizontal position, and the ball's vertical position overlaps with the paddle's vertical range.
     -   When a collision occurs, the `velocityX` of the ball should be reversed to make it bounce off the paddle. You might also want to slightly adjust the `velocityY` based on where the ball hits the paddle for more realistic gameplay.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.3: Implement Scoring Logic:**
+-   [x] **To-do 3.2.3: Implement Scoring Logic:**
     -   In the `updateBall()` method, add logic to check if the ball has gone past the left or right edges of the game area.
     -   If the ball goes past the left edge, the right player scores a point. If it goes past the right edge, the left player scores a point.
     -   When a player scores, increment their score in the `Game` state.
