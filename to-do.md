@@ -161,7 +161,7 @@
 
 ### Chunk 3.1: Frontend Player Input Handling
 
--   [ ] **To-do 3.1.1: Capture Keyboard Input:**
+-   [x] **To-do 3.1.1: Capture Keyboard Input:**
     -   **GitHub Action:** Create a new branch named `feature/player-input` based on `main`.
     -   In `frontend/src/components/GameCanvas.tsx` (or `App.tsx`), add event listeners for keyboard events (`keydown` and `keyup`) on the `window` or the `document`.
     -   Identify specific keys that will control each player's paddle movement (e.g., 'w' and 's' for player 1, 'ArrowUp' and 'ArrowDown' for player 2).

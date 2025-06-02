@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { io, Socket } from 'socket.io-client';
@@ -21,25 +21,26 @@ const initialGameStateData: GameState = {
   gameArea: initialGameAreaState,
 };
 
+const PLAYER_1_UP_KEY = 'w';
+const PLAYER_1_DOWN_KEY = 's';
+const PLAYER_2_UP_KEY = 'ArrowUp';
+const PLAYER_2_DOWN_KEY = 'ArrowDown';
+const isGameKey = (key: string): boolean => {
+  return [PLAYER_1_UP_KEY, PLAYER_1_DOWN_KEY, PLAYER_2_UP_KEY, PLAYER_2_DOWN_KEY].includes(key);
+};
+
 function App() {
   const [gameState, setGameState] = useState<GameState | null>(initialGameStateData);
+  const [pressedKeys, setPressedKeys] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const socket: Socket = io(SOCKET_SERVER_URL);
-    socket.on('connect', () => {
-      console.log(`Frontend: Successfully connected to Socket.IO server! Socket ID: ${socket.id}`);
-    });
-    socket.on('disconnect', (reason) => {
-      console.log(`Frontend: Disconnected from Socket.IO server. Reason: ${reason}`);
-    });
-    socket.on('connect_error', (error) => {
-      console.error('Frontend: Socket.IO connection error:', error);
-    });
-    socket.on('gameState', (newState: GameState) => {
-      setGameState(newState);
-    });
+    socket.on('connect', () => console.log(`Frontend: Successfully connected! Socket ID: ${socket.id}`));
+    socket.on('disconnect', (reason) => console.log(`Frontend: Disconnected. Reason: ${reason}`));
+    socket.on('connect_error', (error) => console.error('Frontend: Connection error:', error));
+    socket.on('gameState', (newState: GameState) => setGameState(newState));
     return () => {
-      console.log('Frontend: Disconnecting Socket.IO socket...');
+      console.log('Frontend: Disconnecting socket...');
       socket.off('connect');
       socket.off('disconnect');
       socket.off('connect_error');
@@ -48,19 +49,69 @@ function App() {
     };
   }, []);
 
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (isGameKey(event.key)) {
+      event.preventDefault(); 
+      setPressedKeys(prevKeys => {
+        if (prevKeys[event.key]) {
+          return prevKeys;
+        }
+        console.log('Key Down:', event.key);
+        return {
+          ...prevKeys,
+          [event.key]: true,
+        };
+      });
+    }
+  }, []);
+
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    if (isGameKey(event.key)) {
+      event.preventDefault();
+      setPressedKeys(prevKeys => {
+        if (!prevKeys[event.key] && typeof prevKeys[event.key] !== 'boolean') {
+             return prevKeys;
+        }
+        console.log('Key Up:', event.key);
+        return {
+          ...prevKeys,
+          [event.key]: false,
+        };
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('Attaching keyboard listeners');
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      console.log('Removing keyboard listeners');
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [handleKeyDown, handleKeyUp]);
+
+
+  // Optional: Log pressedKeys state for verification (keep if you like for testing this step)
+  useEffect(() => {
+    console.log('Currently pressed keys:', pressedKeys);
+  }, [pressedKeys]);
+
   return (
     <div className="App">
+      {/* ... (rest of your JSX remains the same) ... */}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Ping Pong Game</p>
+        {/* For debugging: Display pressed keys */}
+        {/* <div>Pressed Keys: {JSON.stringify(pressedKeys)}</div> */}
 
         {gameState ? (
           <>
-            {/* Game Score Display - now uses a CSS class */}
-            <div className="score-display"> {/* Changed from inline style to className */}
+            <div className="score-display">
               Player 1: {gameState.score.player1} | Player 2: {gameState.score.player2}
             </div>
-
             <GameCanvas gameState={gameState} />
           </>
         ) : (
