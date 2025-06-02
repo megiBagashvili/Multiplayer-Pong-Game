@@ -161,17 +161,17 @@
 
 ### Chunk 3.1: Frontend Player Input Handling
 
--   [ ] **To-do 3.1.1: Capture Keyboard Input:**
+-   [x] **To-do 3.1.1: Capture Keyboard Input:**
     -   **GitHub Action:** Create a new branch named `feature/player-input` based on `main`.
     -   In `frontend/src/components/GameCanvas.tsx` (or `App.tsx`), add event listeners for keyboard events (`keydown` and `keyup`) on the `window` or the `document`.
     -   Identify specific keys that will control each player's paddle movement (e.g., 'w' and 's' for player 1, 'ArrowUp' and 'ArrowDown' for player 2).
     -   Maintain state to track which movement keys are currently being pressed.
     -   **GitHub Action:** Commit the changes to `feature/player-input`.
--   [ ] **To-do 3.1.2: Emit Paddle Movement to Backend:**
+-   [x] **To-do 3.1.2: Emit Paddle Movement to Backend:**
     -   When a relevant movement key is pressed or released, emit a custom Socket.IO event (e.g., `'paddleMove'`) to the backend, including information about which player is moving and the direction of movement.
     -   Consider sending updates at a reasonable interval while the key is held down to ensure smooth movement.
     -   **GitHub Action:** Commit the changes to `feature/player-input`.
--   [ ] **To-do 3.1.3: Merge Player Input Handling:**
+-   [x] **To-do 3.1.3: Merge Player Input Handling:**
     -   Create a Pull Request (PR) from the `feature/player-input` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
