@@ -182,7 +182,7 @@
     -   In `backend/src/server.ts` (or a dedicated game management module), set up a Socket.IO event listener for the `'paddleMove'` event.
     -   Based on the received player and direction, update the `y` position of the corresponding paddle in the `Game` instance. Ensure the paddle stays within the game bounds.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.2: Implement Ball-Paddle Collision Detection:**
+-   [x] **To-do 3.2.2: Implement Ball-Paddle Collision Detection:**
     -   In the `updateBall()` method of the `Game` class in `backend/src/game/Game.ts`, add logic to detect collisions between the ball and each of the paddles.
     -   A collision occurs if the ball's horizontal position overlaps with the paddle's horizontal position, and the ball's vertical position overlaps with the paddle's vertical range.
     -   When a collision occurs, the `velocityX` of the ball should be reversed to make it bounce off the paddle. You might also want to slightly adjust the `velocityY` based on where the ball hits the paddle for more realistic gameplay.
