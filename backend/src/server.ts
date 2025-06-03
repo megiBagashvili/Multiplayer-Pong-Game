@@ -21,6 +21,7 @@ const io = new SocketIOServer(httpServer, {
 });
 
 const game = new Game();
+let gameHasEndedForThisSession = false; 
 
 interface PaddleMovePayload {
   playerId: 'player1' | 'player2';
@@ -33,7 +34,11 @@ io.on('connection', (socket: Socket) => {
 
   const currentGameState: GameState = game.getGameState();
   socket.emit('gameState', currentGameState);
+  if (game.isGameOver) {
+    socket.emit('gameOver', { winner: game.winner, score: game.score });
+  }
   console.log(`Sent initial gameState to ${socket.id}`);
+
 
   socket.on('paddleMove', (data: PaddleMovePayload) => {
     if (!data || typeof data.playerId !== 'string' || typeof data.action !== 'string' || typeof data.direction !== 'string') {
@@ -89,12 +94,20 @@ httpServer.listen(PORT, () => {
 
   const gameLoopInterval = 1000;
   setInterval(() => {
-    game.paddle1.updatePosition(game.gameAreaHeight);
-    game.paddle2.updatePosition(game.gameAreaHeight);
+    let previousGameOverState = game.isGameOver;
 
-    game.updateBall();
+    if (!game.isGameOver) {
+      game.paddle1.updatePosition(game.gameAreaHeight);
+      game.paddle2.updatePosition(game.gameAreaHeight);
+      game.updateBall();
+    }
 
-    const gameState: GameState = game.getGameState();
-    io.emit('gameState', gameState);
+    const currentGameState: GameState = game.getGameState();
+    io.emit('gameState', currentGameState);
+    if (currentGameState.isGameOver && !previousGameOverState && !gameHasEndedForThisSession) {
+      console.log(`Broadcasting 'gameOver' event. Winner: ${currentGameState.winner}`);
+      io.emit('gameOver', { winner: currentGameState.winner, score: currentGameState.score });
+      gameHasEndedForThisSession = true;
+    }
   }, gameLoopInterval);
 });

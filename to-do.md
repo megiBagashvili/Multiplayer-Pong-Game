@@ -194,15 +194,15 @@
     -   After a score, reset the ball to the center of the game area and potentially reverse its horizontal direction. You might also want to briefly pause the game before restarting.
     -   Update the `getGameState()` method to include the current scores of both players.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.4: Update Frontend on Score Changes:**
+-   [x] **To-do 3.2.4: Update Frontend on Score Changes:**
     -   Ensure that the `'gameState'` event emitted from the backend includes the updated scores.
     -   In `frontend/src/App.tsx`, update the score state variables when a new `gameState` is received.
     -   The rendered score display should now reflect the real-time scoring.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.5: Basic Win Condition (Optional):**
+-   [x] **To-do 3.2.5: Basic Win Condition (Optional):**
     -   As a basic addition, you can implement a simple win condition (e.g., first player to reach a certain score wins). When a player wins, update the game state and potentially emit a `'gameOver'` event to the frontend.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.6: Merge Backend Game Mechanics:**
+-   [x] **To-do 3.2.6: Merge Backend Game Mechanics:**
     -   Create a Pull Request (PR) from the `feature/backend-mechanics` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
