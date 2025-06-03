@@ -75,8 +75,6 @@ io.on('connection', (socket: ServerSocket) => {
       const gameInstance = gameManager.getGame(gameId);
       if (gameInstance) {
         io.to(gameId).emit('gameState', gameInstance.getGameState());
-        // Optional: emit a specific 'playerJoined' event to the room if needed
-        // socket.to(gameId).emit('playerJoined', { socketId: socket.id, playerRole: joinResult.playerRole, playerCount: gameInstance.playerCount });
       }
     } else {
       console.log(`Socket ${socket.id} failed to join game ${gameId}: ${joinResult.message}`);
@@ -155,29 +153,20 @@ app.get('/', (req: Request, res: Response) => {
 const gameLoopInterval = 1000;
 const activeGameLoops = new Map<string, NodeJS.Timeout>();
 
-// For simplicity now, one main loop iterates all games.
-// For a large number of games, individual loops or a more optimized update strategy would be better.
 setInterval(() => {
   gameManager.getActiveGames().forEach((game, gameId) => {
     const wasGameOver = game.isGameOver;
 
-    if (!game.isGameOver) {
-      if (game.playerCount === 2) {
+    if (!game.isGameOver && game.playerCount === 2) {
         game.paddle1.updatePosition(game.gameAreaHeight);
         game.paddle2.updatePosition(game.gameAreaHeight);
         game.updateBall();
-      } else {
-        if(game.ball.velocityX !== 0 || game.ball.velocityY !== 0) {
-          game.ball.velocityX = 0;
-          game.ball.velocityY = 0;
-        }
-      }
     }
 
     const currentGameState: GameState = game.getGameState();
-    io.to(gameId).emit('gameState', currentGameState);
+    io.to(gameId).emit('gameState', currentGameState); 
 
-    if (currentGameState.isGameOver && !wasGameOver) {
+    if (currentGameState.isGameOver && !wasGameOver) { 
       console.log(`Game ${gameId} ended. Winner: ${currentGameState.winner}. Broadcasting 'gameOver' event.`);
       io.to(gameId).emit('gameOver', { winner: currentGameState.winner, score: currentGameState.score });
     }

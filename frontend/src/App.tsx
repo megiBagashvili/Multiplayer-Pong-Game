@@ -32,8 +32,6 @@ const isGameKey = (key: string): boolean => {
 };
 
 interface PaddleMovePayload {
-  // Later, we'll get the actual player ID (or side) from the server upon connection/room join
-  // For now, we derive it based on the key pressed.
   playerId: 'player1' | 'player2';
   action: 'start' | 'stop';
   direction: 'up' | 'down';
@@ -48,6 +46,9 @@ function App() {
   useEffect(() => {
     const newSocket = io(SOCKET_SERVER_URL);
     socketRef.current = newSocket;
+
+    (window as any).socketForTesting = newSocket;
+    console.log(`This window's socket is now accessible as: window.socketForTesting (Connected: ${newSocket.connected})`);
 
     newSocket.on('connect', () => console.log(`Frontend: Successfully connected! Socket ID: ${newSocket.id}`));
     newSocket.on('disconnect', (reason) => console.log(`Frontend: Disconnected. Reason: ${reason}`));

@@ -230,11 +230,11 @@
         -   Joining an existing game room. When a client emits an event (e.g., `'joinGame'` with a `gameId`), the server should use the `GameManager` to add the client to the specified room. If successful, notify the client and potentially other players in the room.
         -   Ensure that game state updates and paddle movement events are now specific to a particular game room (e.g., using `io.to(gameId).emit(...)`).
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.5: Update Game Logic to Use Game ID:**
+-   [x] **To-do 4.1.5: Update Game Logic to Use Game ID:**
     -   Modify the game logic to operate on the `Game` instance associated with a specific `gameId` managed by the `GameManager`.
     -   Ensure that paddle movements and game state updates are correctly routed to the appropriate `Game` instance based on the room the players are in.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.6: Merge Game Room Management:**
+-   [x] **To-do 4.1.6: Merge Game Room Management:**
     -   Create a Pull Request (PR) from the `feature/game-rooms` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 

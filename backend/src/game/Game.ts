@@ -82,7 +82,7 @@ export class Game {
     );
   }
 
-  private resetBallAndServe(serveToRightPlayer: boolean): void {
+  public resetBallAndServe(serveToRightPlayer: boolean): void {
     if (this.isGameOver) {
       this.stopGame();
       return;
@@ -93,21 +93,25 @@ export class Game {
     if (!serveToRightPlayer) {
       newVelocityX *= -1;
     }
-    const newVelocityY =
-      (Math.random() > 0.5 ? 1 : -1) * INITIAL_BALL_SPEED_Y * Math.random();
+    let newVelocityY = INITIAL_BALL_SPEED_Y;
+    if (Math.random() < 0.5) {
+        newVelocityY *= -1;
+    }
+    
     this.ball.reset(ballX, ballY, newVelocityX, newVelocityY);
-    console.log(
-      `Ball reset. Serving to ${
-        serveToRightPlayer ? "Player 2 (right)" : "Player 1 (left)"
-      }.`
-    );
+    console.log(`[Game ${this.player1SocketId}/${this.player2SocketId}] resetBallAndServe: VelX=${this.ball.velocityX.toFixed(2)}, VelY=${this.ball.velocityY.toFixed(2)}`);
+    console.log(`Ball reset. Serving to ${serveToRightPlayer ? "Player 2 (right)" : "Player 1 (left)"}.`);
   }
 
   public updateBall(): void {
+    console.log(`[Game ${this.player1SocketId}/${this.player2SocketId}] updateBall called. IsGameOver: ${this.isGameOver}, BallVelX: ${this.ball.velocityX.toFixed(2)}, BallVelY: ${this.ball.velocityY.toFixed(2)}`);
+
     if (this.isGameOver) {
       return;
     }
     this.ball.updatePosition();
+    console.log(`[Game] After updatePosition: BallX=${this.ball.x.toFixed(2)}, BallY=${this.ball.y.toFixed(2)}`);
+
     if (this.ball.velocityX < 0) {
       if (
         this.ball.x - this.ball.radius < this.paddle1.x + this.paddle1.width &&
@@ -144,7 +148,6 @@ export class Game {
       this.ball.y = this.gameAreaHeight - this.ball.radius;
       if (this.ball.velocityY > 0) this.ball.velocityY *= -1;
     }
-    // Scoring
     let playerScored = false;
     if (this.ball.x + this.ball.radius < 0) {
       this.score.player2++;
@@ -187,7 +190,7 @@ export class Game {
       gameArea: { width: this.gameAreaWidth, height: this.gameAreaHeight },
       isGameOver: this.isGameOver,
       winner: this.winner,
-      playerCount: this.playerCount, // Add playerCount to emitted state
+      playerCount: this.playerCount,
     };
   }
 }

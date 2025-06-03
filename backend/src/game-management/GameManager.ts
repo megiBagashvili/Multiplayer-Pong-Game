@@ -79,6 +79,10 @@ export class GameManager {
       console.log(
         `Socket ${socketId} joined game ${gameId} as Player 1. Player count: ${game.playerCount}`
       );
+      if (game.playerCount === 2 && !game.isGameOver) {
+        console.log(`Game ${gameId} is now full. Triggering initial serve.`);
+        game.resetBallAndServe(Math.random() < 0.5); 
+      }
       return { success: true, playerRole: "player1", gameId: gameId };
     } else if (game.player2SocketId === null) {
       game.player2SocketId = socketId;
@@ -86,8 +90,9 @@ export class GameManager {
       console.log(
         `Socket ${socketId} joined game ${gameId} as Player 2. Player count: ${game.playerCount}`
       );
-      if (game.playerCount === 2) {
-        console.log(`Game ${gameId} is now full and ready to start.`);
+      if (game.playerCount === 2 && !game.isGameOver) {
+        console.log(`Game ${gameId} is now full and ready to start. Triggering initial serve.`);
+        game.resetBallAndServe(Math.random() < 0.5);
       }
       return { success: true, playerRole: "player2", gameId: gameId };
     } else {
