@@ -210,31 +210,31 @@
 
 ### Chunk 4.1: Backend Game Room Logic
 
--   [ ] **To-do 4.1.1: Create `GameManager` Class:**
+-   [x] **To-do 4.1.1: Create `GameManager` Class:**
     -   **GitHub Action:** Create a new branch named `feature/game-rooms` based on `main`.
     -   Create a new directory `backend/src/game-management`.
     -   Create a file `backend/src/game-management/GameManager.ts`.
     -   Implement a `GameManager` class that will be responsible for managing multiple game sessions (rooms). It should store a collection of active `Game` instances, each identified by a unique game ID.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.2: Implement Game Creation:**
+-   [x] **To-do 4.1.2: Implement Game Creation:**
     -   In the `GameManager`, implement a method to create a new `Game` instance and generate a unique game ID for it. Store the new game in the collection.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.3: Implement Player Joining:**
+-   [x] **To-do 4.1.3: Implement Player Joining:**
     -   In the `GameManager`, implement a method to allow two players to join a specific game room (identified by its ID). You'll need to keep track of which players are in which room. Consider assigning each player a 'player number' (e.g., 1 or 2) or a side (left or right).
     -   Handle the case where a third player tries to join a full room (you can either reject them or implement spectator mode later).
     -   Associate each connected Socket.IO socket with a game room and a player within that room.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.4: Modify Socket Event Handling:**
+-   [x] **To-do 4.1.4: Modify Socket Event Handling:**
     -   In `backend/src/server.ts`, implement Socket.IO event listeners for:
         -   Creating a new game room. When a client emits an event (e.g., `'createGame'`), the server should use the `GameManager` to create a new game and respond with the game ID. The client should then join this room.
         -   Joining an existing game room. When a client emits an event (e.g., `'joinGame'` with a `gameId`), the server should use the `GameManager` to add the client to the specified room. If successful, notify the client and potentially other players in the room.
         -   Ensure that game state updates and paddle movement events are now specific to a particular game room (e.g., using `io.to(gameId).emit(...)`).
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.5: Update Game Logic to Use Game ID:**
+-   [x] **To-do 4.1.5: Update Game Logic to Use Game ID:**
     -   Modify the game logic to operate on the `Game` instance associated with a specific `gameId` managed by the `GameManager`.
     -   Ensure that paddle movements and game state updates are correctly routed to the appropriate `Game` instance based on the room the players are in.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.6: Merge Game Room Management:**
+-   [x] **To-do 4.1.6: Merge Game Room Management:**
     -   Create a Pull Request (PR) from the `feature/game-rooms` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 

@@ -9,7 +9,7 @@ const BALL_RADIUS = 7;
 const INITIAL_BALL_SPEED_X = 5;
 const INITIAL_BALL_SPEED_Y = 2;
 const MAX_BALL_SPEED_Y_AFTER_PADDLE_HIT = 7;
-const WINNING_SCORE = 2;
+const WINNING_SCORE = 5;
 
 interface Score {
   player1: number;
@@ -24,6 +24,7 @@ export interface GameState {
   gameArea: { width: number; height: number };
   isGameOver: boolean;
   winner: "player1" | "player2" | null;
+  playerCount: number;
 }
 
 export class Game {
@@ -35,6 +36,10 @@ export class Game {
   public gameAreaHeight: number;
   public isGameOver: boolean;
   public winner: "player1" | "player2" | null;
+
+  public player1SocketId: string | null;
+  public player2SocketId: string | null;
+  public playerCount: number;
 
   constructor() {
     this.gameAreaWidth = GAME_WIDTH;
@@ -52,6 +57,10 @@ export class Game {
     this.isGameOver = false;
     this.winner = null;
 
+    this.player1SocketId = null;
+    this.player2SocketId = null;
+    this.playerCount = 0;
+
     this.ball = new Ball(
       this.gameAreaWidth / 2,
       this.gameAreaHeight / 2,
@@ -59,15 +68,13 @@ export class Game {
       0,
       0
     );
-    this.resetBallAndServe(Math.random() < 0.5);
-
-    console.log("New Game instance created and initialized.");
+    if (!this.isGameOver) {
+      this.resetBallAndServe(Math.random() < 0.5);
+    }
+    console.log("New Game instance created.");
   }
 
   private stopGame(): void {
-    // Optional: Move ball to center and stop it completely
-    // this.ball.x = this.gameAreaWidth / 2;
-    // this.ball.y = this.gameAreaHeight / 2;
     this.ball.velocityX = 0;
     this.ball.velocityY = 0;
     console.log(
@@ -75,39 +82,37 @@ export class Game {
     );
   }
 
-  private resetBallAndServe(serveToRightPlayer: boolean): void {
+  public resetBallAndServe(serveToRightPlayer: boolean): void {
     if (this.isGameOver) {
       this.stopGame();
       return;
     }
-
     const ballX = this.gameAreaWidth / 2;
     const ballY = this.gameAreaHeight / 2;
     let newVelocityX = INITIAL_BALL_SPEED_X;
     if (!serveToRightPlayer) {
       newVelocityX *= -1;
     }
-    const newVelocityY =
-      (Math.random() > 0.5 ? 1 : -1) * INITIAL_BALL_SPEED_Y * Math.random();
+    let newVelocityY = INITIAL_BALL_SPEED_Y;
+    if (Math.random() < 0.5) {
+        newVelocityY *= -1;
+    }
+    
     this.ball.reset(ballX, ballY, newVelocityX, newVelocityY);
-    console.log(
-      `Ball reset. Serving to ${
-        serveToRightPlayer ? "Player 2 (right)" : "Player 1 (left)"
-      }.`
-    );
+    console.log(`[Game ${this.player1SocketId}/${this.player2SocketId}] resetBallAndServe: VelX=${this.ball.velocityX.toFixed(2)}, VelY=${this.ball.velocityY.toFixed(2)}`);
+    console.log(`Ball reset. Serving to ${serveToRightPlayer ? "Player 2 (right)" : "Player 1 (left)"}.`);
   }
 
   public updateBall(): void {
+    console.log(`[Game ${this.player1SocketId}/${this.player2SocketId}] updateBall called. IsGameOver: ${this.isGameOver}, BallVelX: ${this.ball.velocityX.toFixed(2)}, BallVelY: ${this.ball.velocityY.toFixed(2)}`);
+
     if (this.isGameOver) {
       return;
     }
-
     this.ball.updatePosition();
+    console.log(`[Game] After updatePosition: BallX=${this.ball.x.toFixed(2)}, BallY=${this.ball.y.toFixed(2)}`);
 
-    // Paddle collision logic (as before)
-    // ... (your existing paddle collision logic)
     if (this.ball.velocityX < 0) {
-      // Moving left
       if (
         this.ball.x - this.ball.radius < this.paddle1.x + this.paddle1.width &&
         this.ball.x + this.ball.radius > this.paddle1.x &&
@@ -136,7 +141,6 @@ export class Game {
           -MAX_BALL_SPEED_Y_AFTER_PADDLE_HIT;
       }
     }
-
     if (this.ball.y - this.ball.radius < 0) {
       this.ball.y = this.ball.radius;
       if (this.ball.velocityY < 0) this.ball.velocityY *= -1;
@@ -144,13 +148,9 @@ export class Game {
       this.ball.y = this.gameAreaHeight - this.ball.radius;
       if (this.ball.velocityY > 0) this.ball.velocityY *= -1;
     }
-
     let playerScored = false;
     if (this.ball.x + this.ball.radius < 0) {
       this.score.player2++;
-      console.log(
-        `Player 2 scores! Score: P1: ${this.score.player1} - P2: ${this.score.player2}`
-      );
       playerScored = true;
       if (this.score.player2 >= WINNING_SCORE) {
         this.isGameOver = true;
@@ -159,9 +159,6 @@ export class Game {
       this.resetBallAndServe(false);
     } else if (this.ball.x - this.ball.radius > this.gameAreaWidth) {
       this.score.player1++;
-      console.log(
-        `Player 1 scores! Score: P1: ${this.score.player1} - P2: ${this.score.player2}`
-      );
       playerScored = true;
       if (this.score.player1 >= WINNING_SCORE) {
         this.isGameOver = true;
@@ -169,7 +166,6 @@ export class Game {
       }
       this.resetBallAndServe(true);
     }
-
     if (this.isGameOver && playerScored) {
       this.stopGame();
     }
@@ -194,6 +190,7 @@ export class Game {
       gameArea: { width: this.gameAreaWidth, height: this.gameAreaHeight },
       isGameOver: this.isGameOver,
       winner: this.winner,
+      playerCount: this.playerCount,
     };
   }
 }
