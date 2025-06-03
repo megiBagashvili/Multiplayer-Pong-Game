@@ -224,7 +224,7 @@
     -   Handle the case where a third player tries to join a full room (you can either reject them or implement spectator mode later).
     -   Associate each connected Socket.IO socket with a game room and a player within that room.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.4: Modify Socket Event Handling:**
+-   [x] **To-do 4.1.4: Modify Socket Event Handling:**
     -   In `backend/src/server.ts`, implement Socket.IO event listeners for:
         -   Creating a new game room. When a client emits an event (e.g., `'createGame'`), the server should use the `GameManager` to create a new game and respond with the game ID. The client should then join this room.
         -   Joining an existing game room. When a client emits an event (e.g., `'joinGame'` with a `gameId`), the server should use the `GameManager` to add the client to the specified room. If successful, notify the client and potentially other players in the room.

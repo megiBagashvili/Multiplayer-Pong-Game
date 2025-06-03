@@ -22,6 +22,17 @@ export class GameManager {
     console.log("GameManager initialized.");
   }
 
+  /**
+   * Public getter to allow iteration over active games without exposing
+   * the private property directly for modification from outside in all cases.
+   * Note: This still returns a reference to the map, so it could be modified.
+   * For stricter encapsulation, you could return an iterator or a copy.
+   * For this project's needs, this is likely sufficient.
+   */
+  public getActiveGames(): Map<string, Game> {
+    return this.activeGames;
+  }
+
   public createGame(): string {
     let gameId: string;
     do {
