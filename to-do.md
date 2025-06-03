@@ -219,7 +219,7 @@
 -   [x] **To-do 4.1.2: Implement Game Creation:**
     -   In the `GameManager`, implement a method to create a new `Game` instance and generate a unique game ID for it. Store the new game in the collection.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.3: Implement Player Joining:**
+-   [x] **To-do 4.1.3: Implement Player Joining:**
     -   In the `GameManager`, implement a method to allow two players to join a specific game room (identified by its ID). You'll need to keep track of which players are in which room. Consider assigning each player a 'player number' (e.g., 1 or 2) or a side (left or right).
     -   Handle the case where a third player tries to join a full room (you can either reject them or implement spectator mode later).
     -   Associate each connected Socket.IO socket with a game room and a player within that room.
