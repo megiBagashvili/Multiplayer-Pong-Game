@@ -1,5 +1,3 @@
-// backend/src/server.ts
-
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import http from 'http';
@@ -8,6 +6,8 @@ import { Game, GameState } from './game/Game';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+const PADDLE_SPEED = 8;
 
 app.use(cors());
 app.use(express.json());
@@ -21,22 +21,68 @@ const io = new SocketIOServer(httpServer, {
 });
 
 const game = new Game();
+let gameHasEndedForThisSession = false; 
+
+interface PaddleMovePayload {
+  playerId: 'player1' | 'player2';
+  action: 'start' | 'stop';
+  direction: 'up' | 'down';
+}
 
 io.on('connection', (socket: Socket) => {
   console.log('A user connected:', socket.id);
 
-  // 1. Emit the current game state to the newly connected client
-  // This ensures the new player gets the game state immediately upon joining.
   const currentGameState: GameState = game.getGameState();
   socket.emit('gameState', currentGameState);
+  if (game.isGameOver) {
+    socket.emit('gameOver', { winner: game.winner, score: game.score });
+  }
   console.log(`Sent initial gameState to ${socket.id}`);
+
+
+  socket.on('paddleMove', (data: PaddleMovePayload) => {
+    if (!data || typeof data.playerId !== 'string' || typeof data.action !== 'string' || typeof data.direction !== 'string') {
+      console.warn(`Received malformed paddleMove data from ${socket.id}:`, data);
+      return;
+    }
+
+    // console.log(`Received paddleMove from ${socket.id}:`, data); // For debugging
+
+    let targetPaddle;
+    if (data.playerId === 'player1') {
+      targetPaddle = game.paddle1;
+    } else if (data.playerId === 'player2') {
+      targetPaddle = game.paddle2;
+    } else {
+      console.warn(`Invalid playerId in paddleMove from ${socket.id}: ${data.playerId}`);
+      return;
+    }
+
+
+    if (data.action === 'start') {
+      if (data.direction === 'up') {
+        targetPaddle.moveUp(PADDLE_SPEED);
+      } else if (data.direction === 'down') {
+        targetPaddle.moveDown(PADDLE_SPEED);
+      }
+    } else if (data.action === 'stop') {
+      // The paddle's stop() method doesn't currently care about which direction was stopped,
+      // it just sets dy to 0. If current dy is already 0 or in the opposite direction
+      // of the key released, this still correctly stops or doesn't interfere.
+      // However, to be more precise, you could check if the paddle's current dy matches the stop direction.
+      // For example: if (data.direction === 'up' && targetPaddle.dy < 0) targetPaddle.stop();
+      // else if (data.direction === 'down' && targetPaddle.dy > 0) targetPaddle.stop();
+      // But a simple stop() is fine for most cases.
+      targetPaddle.stop();
+    }
+  });
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
+    // Future: If a player disconnects, you might want to stop their paddle.
+    // This requires knowing which paddle this socket controlled.
+    // For now, we handle explicit stop commands.
   });
-
-  // Future: Listen for player input events from this socket
-  // socket.on('paddleMove', (data) => { /* ... */ });
 });
 
 app.get('/', (req: Request, res: Response) => {
@@ -48,21 +94,20 @@ httpServer.listen(PORT, () => {
 
   const gameLoopInterval = 1000;
   setInterval(() => {
-    game.updateBall();
-    // Paddle updates would go here too, once we have input based on game rooms
-    // game.updatePaddle1(...);
-    // game.updatePaddle2(...);
+    let previousGameOverState = game.isGameOver;
 
-    const gameState: GameState = game.getGameState();
+    if (!game.isGameOver) {
+      game.paddle1.updatePosition(game.gameAreaHeight);
+      game.paddle2.updatePosition(game.gameAreaHeight);
+      game.updateBall();
+    }
 
-    // 2. Emit the updated game state to ALL connected clients
-    // This line replaces the previous console.log for game state.
-    io.emit('gameState', gameState);
-
-    // The console.log for game state is now removed to reduce noise,
-    // as the state is being actively emitted.
-    // If you need to debug the state on the server, you can temporarily add it back:
-    // console.log('Broadcasting Game State:', JSON.stringify(gameState, null, 2));
-
+    const currentGameState: GameState = game.getGameState();
+    io.emit('gameState', currentGameState);
+    if (currentGameState.isGameOver && !previousGameOverState && !gameHasEndedForThisSession) {
+      console.log(`Broadcasting 'gameOver' event. Winner: ${currentGameState.winner}`);
+      io.emit('gameOver', { winner: currentGameState.winner, score: currentGameState.score });
+      gameHasEndedForThisSession = true;
+    }
   }, gameLoopInterval);
 });

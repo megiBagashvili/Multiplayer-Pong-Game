@@ -177,32 +177,32 @@
 
 ### Chunk 3.2: Backend Game Mechanics - Paddle Movement, Collision, Scoring
 
--   [ ] **To-do 3.2.1: Handle Paddle Movement on Backend:**
+-   [x] **To-do 3.2.1: Handle Paddle Movement on Backend:**
     -   **GitHub Action:** Create a new branch named `feature/backend-mechanics` based on `main`.
     -   In `backend/src/server.ts` (or a dedicated game management module), set up a Socket.IO event listener for the `'paddleMove'` event.
     -   Based on the received player and direction, update the `y` position of the corresponding paddle in the `Game` instance. Ensure the paddle stays within the game bounds.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.2: Implement Ball-Paddle Collision Detection:**
+-   [x] **To-do 3.2.2: Implement Ball-Paddle Collision Detection:**
     -   In the `updateBall()` method of the `Game` class in `backend/src/game/Game.ts`, add logic to detect collisions between the ball and each of the paddles.
     -   A collision occurs if the ball's horizontal position overlaps with the paddle's horizontal position, and the ball's vertical position overlaps with the paddle's vertical range.
     -   When a collision occurs, the `velocityX` of the ball should be reversed to make it bounce off the paddle. You might also want to slightly adjust the `velocityY` based on where the ball hits the paddle for more realistic gameplay.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.3: Implement Scoring Logic:**
+-   [x] **To-do 3.2.3: Implement Scoring Logic:**
     -   In the `updateBall()` method, add logic to check if the ball has gone past the left or right edges of the game area.
     -   If the ball goes past the left edge, the right player scores a point. If it goes past the right edge, the left player scores a point.
     -   When a player scores, increment their score in the `Game` state.
     -   After a score, reset the ball to the center of the game area and potentially reverse its horizontal direction. You might also want to briefly pause the game before restarting.
     -   Update the `getGameState()` method to include the current scores of both players.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.4: Update Frontend on Score Changes:**
+-   [x] **To-do 3.2.4: Update Frontend on Score Changes:**
     -   Ensure that the `'gameState'` event emitted from the backend includes the updated scores.
     -   In `frontend/src/App.tsx`, update the score state variables when a new `gameState` is received.
     -   The rendered score display should now reflect the real-time scoring.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.5: Basic Win Condition (Optional):**
+-   [x] **To-do 3.2.5: Basic Win Condition (Optional):**
     -   As a basic addition, you can implement a simple win condition (e.g., first player to reach a certain score wins). When a player wins, update the game state and potentially emit a `'gameOver'` event to the frontend.
     -   **GitHub Action:** Commit the changes to `feature/backend-mechanics`.
--   [ ] **To-do 3.2.6: Merge Backend Game Mechanics:**
+-   [x] **To-do 3.2.6: Merge Backend Game Mechanics:**
     -   Create a Pull Request (PR) from the `feature/backend-mechanics` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 

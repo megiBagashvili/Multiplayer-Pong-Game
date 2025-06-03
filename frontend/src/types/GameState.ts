@@ -27,4 +27,6 @@ export interface GameState {
   ball: BallState;
   score: ScoreState;
   gameArea: GameAreaState;
+  isGameOver: boolean;
+  winner: 'player1' | 'player2' | null;
 }

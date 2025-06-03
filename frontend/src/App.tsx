@@ -19,6 +19,8 @@ const initialGameStateData: GameState = {
   ball: initialBallState,
   score: initialScoreState,
   gameArea: initialGameAreaState,
+  isGameOver: false,
+  winner: null,
 };
 
 const PLAYER_1_UP_KEY = 'w';
