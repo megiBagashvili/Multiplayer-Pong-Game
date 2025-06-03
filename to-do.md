@@ -210,13 +210,13 @@
 
 ### Chunk 4.1: Backend Game Room Logic
 
--   [ ] **To-do 4.1.1: Create `GameManager` Class:**
+-   [x] **To-do 4.1.1: Create `GameManager` Class:**
     -   **GitHub Action:** Create a new branch named `feature/game-rooms` based on `main`.
     -   Create a new directory `backend/src/game-management`.
     -   Create a file `backend/src/game-management/GameManager.ts`.
     -   Implement a `GameManager` class that will be responsible for managing multiple game sessions (rooms). It should store a collection of active `Game` instances, each identified by a unique game ID.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
--   [ ] **To-do 4.1.2: Implement Game Creation:**
+-   [x] **To-do 4.1.2: Implement Game Creation:**
     -   In the `GameManager`, implement a method to create a new `Game` instance and generate a unique game ID for it. Store the new game in the collection.
     -   **GitHub Action:** Commit the changes to `feature/game-rooms`.
 -   [ ] **To-do 4.1.3: Implement Player Joining:**
