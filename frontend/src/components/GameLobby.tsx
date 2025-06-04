@@ -1,12 +1,11 @@
-// frontend/src/components/GameLobby.tsx
 import React, { useState } from 'react';
-import './GameLobby.css'; // We'll create this for basic styling
+import './GameLobby.css';
 
 interface GameLobbyProps {
   onCreateGame: () => void; // Placeholder for now, will emit socket event later
   onJoinGame: (gameId: string) => void; // Placeholder for now, will emit socket event later
-  isLoading: boolean; // To disable buttons during an action
-  errorMessage?: string | null; // To display any error messages from App.tsx
+  isLoading: boolean;
+  errorMessage?: string | null;
 }
 
 const GameLobby: React.FC<GameLobbyProps> = ({ onCreateGame, onJoinGame, isLoading, errorMessage }) => {

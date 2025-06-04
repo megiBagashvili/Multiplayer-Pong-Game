@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { io, Socket } from 'socket.io-client';
-import { GameState, PaddleState, BallState, ScoreState, GameAreaState } from './types/GameState'; // Ensure GameState includes playerCount
+import { GameState, PaddleState, BallState, ScoreState, GameAreaState } from './types/GameState';
 import GameCanvas from './components/GameCanvas';
 import GameLobby from './components/GameLobby';
 
@@ -13,19 +13,6 @@ const initialPaddle2State: PaddleState = { x: 780, y: 250, width: 10, height: 10
 const initialBallState: BallState = { x: 400, y: 300, radius: 7 };
 const initialScoreState: ScoreState = { player1: 0, player2: 0 };
 const initialGameAreaState: GameAreaState = { width: 800, height: 600 };
-
-// This initial state is less critical now as gameState will be null initially
-// and populated by the server.
-const initialGameStateData: GameState = {
-  paddle1: initialPaddle1State,
-  paddle2: initialPaddle2State,
-  ball: initialBallState,
-  score: initialScoreState,
-  gameArea: initialGameAreaState,
-  isGameOver: false,
-  winner: null,
-  playerCount: 0,
-};
 
 const PLAYER_1_UP_KEY = 'w';
 const PLAYER_1_DOWN_KEY = 's';
@@ -46,43 +33,51 @@ type AppView = 'lobby' | 'waitingForPlayer' | 'inGame' | 'gameOver';
 type PlayerRole = 'player1' | 'player2' | null;
 
 function App() {
-  const [appView, setAppView] = useState<AppView>('lobby');
+  const [appView, _setAppView] = useState<AppView>('lobby');
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [pressedKeys, setPressedKeys] = useState<Record<string, boolean>>({});
   const socketRef = useRef<Socket | null>(null);
-  const [gameId, setGameId] = useState<string | null>(null);
-  const [playerRole, setPlayerRole] = useState<PlayerRole>(null);
+  const [gameId, _setGameId] = useState<string | null>(null);
+  const [playerRole, _setPlayerRole] = useState<PlayerRole | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [lobbyErrorMessage, setLobbyErrorMessage] = useState<string | null>(null);
 
-  // Socket connection and core event listeners
+  const appViewRef = useRef(appView);
+  const gameIdRef = useRef(gameId);
+  const playerRoleRef = useRef(playerRole);
+
+  const setAppView = (newView: AppView) => {
+    appViewRef.current = newView;
+    _setAppView(newView);
+  };
+  const setGameId = (newId: string | null) => {
+    gameIdRef.current = newId;
+    _setGameId(newId);
+  };
+  const setPlayerRole = (newRole: PlayerRole | null) => {
+    playerRoleRef.current = newRole;
+    _setPlayerRole(newRole);
+  };
+  
+  
   useEffect(() => {
-    // This effect should run once on mount to establish the socket connection
-    // and clean up on unmount.
     const newSocket = io(SOCKET_SERVER_URL);
     socketRef.current = newSocket;
-
     (window as any).socketForTesting = newSocket;
-    // Initial connection log moved to 'connect' event handler for accuracy
     
     newSocket.on('connect', () => {
       console.log(`Frontend: Successfully connected! Socket ID: ${newSocket.id}`);
-      // If the user was in a game and got disconnected, they might try to rejoin upon reconnect.
-      // This is advanced. For now, a fresh connection takes them to the lobby if not already in a game flow.
-      // If gameId and playerRole are already set (e.g. from a previous state before a brief disconnect),
-      // we might want to inform the server.
-      // For this project, if a disconnect happens, they'll likely go back to lobby.
     });
 
     newSocket.on('disconnect', (reason) => {
       console.log(`Frontend: Disconnected. Reason: ${reason}`);
-      // Consider resetting to lobby if in game, to prevent stale UI
+      // Optional: More robust disconnect handling
       // setAppView('lobby');
       // setGameId(null);
       // setPlayerRole(null);
       // setGameState(null);
-      // setLobbyErrorMessage("You have been disconnected. Please try again.");
-      // setIsLoading(false); // Ensure loading is false
+      // setLobbyErrorMessage("You have been disconnected.");
+      // setIsLoading(false);
     });
 
     newSocket.on('connect_error', (error) => {
@@ -93,36 +88,32 @@ function App() {
     });
 
     newSocket.on('gameState', (newState: GameState) => {
-      console.log('Frontend: Received gameState:', newState);
-      setGameState(newState); // Always update with the latest state from server
+      const currentAppView = appViewRef.current;
+      const currentGameId = gameIdRef.current;
+      const currentPlayerRole = playerRoleRef.current;
 
-      // Determine AppView based on the new game state
+      console.log(`[gameState Handler] Received gameState. PlayerCount: ${newState.playerCount}. Current appView: ${currentAppView}, gameId: ${currentGameId}, playerRole: ${currentPlayerRole}`);
+      setGameState(newState);
+
       if (newState.isGameOver) {
         setAppView('gameOver');
-      } else if (newState.playerCount === 2) {
+      } else if (newState.playerCount === 2 && currentGameId && currentPlayerRole) {
         setAppView('inGame');
-      } else if (newState.playerCount === 1 && gameId && playerRole) { 
-        // Only go to waiting if we know we are part of this game
+      } else if (newState.playerCount === 1 && currentGameId && currentPlayerRole) {
         setAppView('waitingForPlayer');
-      } else {
-        // If gameState is received but doesn't fit other criteria (e.g. game just ended and playerCount is 0)
-        // it might be stale or an edge case. For now, this logic covers main flows.
-        // If gameId is null, it implies we are not actively in a game, so lobby is safe.
-        if (!gameId) setAppView('lobby');
+      } else if (newState.playerCount === 0 && currentGameId) { 
+        setAppView('lobby');
+        setGameId(null); 
+        setPlayerRole(null);
       }
     });
     
-    // This event is not strictly necessary if createGame callback handles everything
-    // newSocket.on('gameCreated', (data: { gameId: string }) => {
-    //     console.log('Frontend: Game created by us (event)!', data);
-    // });
-
     newSocket.on('playerLeft', (data: { disconnectedPlayerId: PlayerRole, newPlayerCount: number }) => {
-        console.log(`Frontend: Player ${data.disconnectedPlayerId} left. New count: ${data.newPlayerCount}`);
-        if (gameState && !gameState.isGameOver) { // gameState might be null if player leaves from lobby/waiting
+        const currentGameId = gameIdRef.current;
+        console.log(`Frontend: Player ${data.disconnectedPlayerId} left game ${currentGameId}. New count: ${data.newPlayerCount}`);
+        if (gameState && !gameState.isGameOver && currentGameId) { 
             if (data.newPlayerCount < 2) {
                 setAppView('waitingForPlayer');
-                // Update local game state to reflect player count if not already done by a 'gameState' emit
                 if(gameState) setGameState(prev => prev ? {...prev, playerCount: data.newPlayerCount} : null);
             }
         }
@@ -131,8 +122,6 @@ function App() {
     newSocket.on('gameOver', (data: { winner: PlayerRole, score: ScoreState }) => {
         console.log(`Frontend: Game Over event! Winner: ${data.winner}`);
         setAppView('gameOver');
-        // The gameState event should also update the scores and winner details.
-        // This event primarily signals the change in view.
     });
 
     return () => {
@@ -141,34 +130,32 @@ function App() {
       newSocket.off('disconnect');
       newSocket.off('connect_error');
       newSocket.off('gameState');
-      // newSocket.off('gameCreated');
       newSocket.off('playerLeft');
       newSocket.off('gameOver');
       newSocket.disconnect();
       socketRef.current = null;
     };
-  }, []); // <--- CRITICAL CHANGE: Empty dependency array
+  }, []);
 
-  // Keyboard input handling
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (isGameKey(event.key) && (appView === 'inGame')) { // Allow input only when inGame
+    if (isGameKey(event.key) && (appViewRef.current === 'inGame')) {
       event.preventDefault();
       setPressedKeys(prevKeys => {
         if (prevKeys[event.key]) return prevKeys;
         return { ...prevKeys, [event.key]: true };
       });
     }
-  }, [appView]);
+  }, []);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
-    if (isGameKey(event.key) && (appView === 'inGame')) { // Allow input only when inGame
+    if (isGameKey(event.key) && (appViewRef.current === 'inGame')) {
       event.preventDefault();
       setPressedKeys(prevKeys => {
         if (!prevKeys[event.key] && typeof prevKeys[event.key] !== 'boolean') return prevKeys;
         return { ...prevKeys, [event.key]: false };
       });
     }
-  }, [appView]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -179,19 +166,20 @@ function App() {
     };
   }, [handleKeyDown, handleKeyUp]);
 
-  // Effect for emitting paddle movements
   const prevPressedKeysRef = useRef<Record<string, boolean>>({});
   useEffect(() => {
-    if (!socketRef.current || !socketRef.current.connected || appView !== 'inGame' || !playerRole) {
+    const currentAppView = appViewRef.current;
+    const currentPlayerRole = playerRoleRef.current;
+
+    if (!socketRef.current || !socketRef.current.connected || currentAppView !== 'inGame' || !currentPlayerRole) {
       return;
     }
 
     const currentSocket = socketRef.current;
-    // Determine which keys belong to the current player based on their role
     let keysToWatch: { up: string, down: string } | null = null;
-    if (playerRole === 'player1') {
+    if (currentPlayerRole === 'player1') {
         keysToWatch = { up: PLAYER_1_UP_KEY, down: PLAYER_1_DOWN_KEY };
-    } else if (playerRole === 'player2') {
+    } else if (currentPlayerRole === 'player2') {
         keysToWatch = { up: PLAYER_2_UP_KEY, down: PLAYER_2_DOWN_KEY };
     }
 
@@ -208,16 +196,15 @@ function App() {
 
         if (isPressed !== wasPressed) {
             const payload: PaddleMovePayload = {
-                playerId: playerRole, // Send our assigned role
+                playerId: currentPlayerRole,
                 action: isPressed ? 'start' : 'stop',
                 direction: action.direction,
             };
-            // console.log(`Emitting 'paddleMove':`, payload);
             currentSocket.emit('paddleMove', payload);
         }
     });
     prevPressedKeysRef.current = { ...pressedKeys };
-  }, [pressedKeys, appView, playerRole]);
+  }, [pressedKeys]);
 
   const handleCreateGame = useCallback(() => {
     if (!socketRef.current || !socketRef.current.connected) {
@@ -228,31 +215,31 @@ function App() {
     setLobbyErrorMessage(null);
     console.log("Frontend: Attempting to create game...");
     socketRef.current.emit('createGame', (response: { gameId?: string; error?: string }) => {
-        // No setIsLoading(false) here, as joinGame will follow
         if (response && response.gameId) {
-            console.log(`Frontend: Game creation initiated by server. Game ID: ${response.gameId}. Attempting to join...`);
-            // Immediately try to join the game we just asked to create
-            socketRef.current?.emit('joinGame', { gameId: response.gameId }, (joinResponse: { success: boolean; gameId?: string; playerRole?: PlayerRole; message?: string }) => {
-                setIsLoading(false); // Set loading false after join attempt
+            const newGameId = response.gameId;
+            console.log(`Frontend: Game creation initiated. Game ID: ${newGameId}. Attempting to join...`);
+            socketRef.current?.emit('joinGame', { gameId: newGameId }, (joinResponse: { success: boolean; gameId?: string; playerRole?: PlayerRole; message?: string }) => {
+                setIsLoading(false);
                 if (joinResponse && joinResponse.success && joinResponse.gameId && joinResponse.playerRole) {
+                    console.log(`Frontend: Successfully joined own game ${joinResponse.gameId} as ${joinResponse.playerRole}`);
                     setGameId(joinResponse.gameId);
                     setPlayerRole(joinResponse.playerRole);
-                    // The 'gameState' event from the server will now dictate the appView.
-                    // We can optimistically set to waiting, but gameState listener is key.
-                    setAppView('waitingForPlayer'); 
-                    console.log(`Frontend: Successfully joined own game ${joinResponse.gameId} as ${joinResponse.playerRole}`);
+                    setAppView('waitingForPlayer');
                 } else {
                     setLobbyErrorMessage(joinResponse.message || "Failed to auto-join created game.");
                     setGameId(null); 
+                    setPlayerRole(null);
+                    setAppView('lobby');
                 }
             });
         } else {
-            setIsLoading(false); // Set loading false if createGame itself failed
+            setIsLoading(false);
             console.error("Frontend: Failed to create game.", response?.error);
             setLobbyErrorMessage(response?.error || "Failed to create game. Unknown error.");
+            setAppView('lobby');
         }
     });
-  }, []); // Empty dependency array is fine as socketRef.current is a ref.
+  }, []);
 
   const handleJoinGame = useCallback((idToJoin: string) => {
     if (!socketRef.current || !socketRef.current.connected) {
@@ -272,22 +259,16 @@ function App() {
             console.log(`Frontend: Successfully joined game ${response.gameId} as ${response.playerRole}`);
             setGameId(response.gameId);
             setPlayerRole(response.playerRole);
-            // The 'gameState' event from the server will dictate the view.
-            // Optimistically set to waitingForPlayer.
             setAppView('waitingForPlayer');
         } else {
             console.error("Frontend: Failed to join game.", response?.message);
             setLobbyErrorMessage(response?.message || "Failed to join game. Invalid ID or room full.");
+            setAppView('lobby');
         }
     });
-  }, []); // Empty dependency array
+  }, []);
 
   const handleReturnToLobby = () => {
-    // If currently in a game, we might want to inform the server we are leaving.
-    // For now, this is a client-side reset. Disconnect will handle server cleanup.
-    // if (socketRef.current && gameId) {
-    //   socketRef.current.emit('leaveGame', { gameId }); // Requires backend handler
-    // }
     setAppView('lobby');
     setGameState(null);
     setGameId(null);
@@ -297,7 +278,7 @@ function App() {
   };
 
   const renderContent = () => {
-    switch (appView) {
+    switch (appViewRef.current) {
       case 'lobby':
         return (
             <GameLobby
@@ -311,9 +292,9 @@ function App() {
         return (
           <div className="waiting-screen">
             <h2>Waiting for Opponent...</h2>
-            {gameId && <p>Game ID: <strong>{gameId}</strong> (Share this with your friend!)</p>}
-            {playerRole && <p>You are: <strong>{playerRole}</strong></p>}
-            {gameState && <GameCanvas gameState={gameState} />}
+            {gameIdRef.current && <p>Game ID: <strong>{gameIdRef.current}</strong> (Share this with your friend!)</p>}
+            {playerRoleRef.current && <p>You are: <strong>{playerRoleRef.current}</strong></p>}
+            {gameState && <GameCanvas gameState={gameState} />} {/* gameState is fine from state */}
             <button onClick={handleReturnToLobby} className="lobby-button">Return to Lobby</button>
           </div>
         );
@@ -323,17 +304,16 @@ function App() {
           <>
             <div className="score-display">
               Player 1: {gameState.score.player1} | Player 2: {gameState.score.player2}
-              <p style={{fontSize: '0.8em', margin: '5px 0'}}>You are: {playerRole} | Game ID: {gameId}</p>
+              <p style={{fontSize: '0.8em', margin: '5px 0'}}>You are: {playerRoleRef.current} | Game ID: {gameIdRef.current}</p>
             </div>
             <GameCanvas gameState={gameState} />
-            {/* Optionally add a "Leave Game" button here that calls handleReturnToLobby */}
           </>
         );
       case 'gameOver':
         return (
           <div className="game-over-screen">
             <h2>Game Over!</h2>
-            {gameState && gameState.winner && <p>Winner: {gameState.winner === playerRole ? `You (${gameState.winner})` : gameState.winner}!</p>}
+            {gameState && gameState.winner && <p>Winner: {gameState.winner === playerRoleRef.current ? `You (${gameState.winner})` : gameState.winner}!</p>}
             {gameState && <p>Final Score: Player 1: {gameState.score.player1} - Player 2: {gameState.score.player2}</p>}
             <button onClick={handleReturnToLobby} className="lobby-button">Play Again (Lobby)</button>
           </div>
@@ -346,7 +326,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {appView !== 'lobby' && <img src={logo} className="App-logo-small" alt="logo" />}
+        {appViewRef.current !== 'lobby' && <img src={logo} className="App-logo-small" alt="logo" />}
         <h1>Ping Pong Game</h1>
         {renderContent()}
       </header>
