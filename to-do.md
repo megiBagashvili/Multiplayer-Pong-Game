@@ -242,7 +242,7 @@
 
 ### Chunk 5.1: Frontend Game Room UI
 
--   [ ] **To-do 5.1.1: Create Game Lobby/Join Screen:**
+-   [x] **To-do 5.1.1: Create Game Lobby/Join Screen:**
     -   **GitHub Action:** Create a new branch named `feature/frontend-rooms` based on `main`.
     -   Create new React components (e.g., `GameLobby.tsx`, `JoinGame.tsx`).
     -   Implement a UI in `GameLobby` that allows a player to create a new game. Upon creation, the server should return a `gameId`, and the player should be navigated to the game screen.
