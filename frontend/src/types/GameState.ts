@@ -29,4 +29,5 @@ export interface GameState {
   gameArea: GameAreaState;
   isGameOver: boolean;
   winner: 'player1' | 'player2' | null;
+  playerCount: number;
 }
