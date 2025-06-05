@@ -265,28 +265,13 @@
 
 ### Chunk 6.1: Visual Enhancements and User Experience
 
--   [ ] **To-do 6.1.1: Improve Styling:**
+-   [x] **To-do 6.1.1: Improve Styling:**
     -   **GitHub Action:** Create a new branch named `feature/polish` based on `main`.
     -   Refine the CSS for the game area, paddles, ball, and scores to create a more visually appealing and polished look.
     -   Consider adding animations or transitions for smoother movement.
     -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.1.2: Add User Feedback:**
-    -   Provide visual feedback to the players (e.g., when a point is scored, when a player joins a game).
-    -   Display messages for game over conditions.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.1.3: Responsive Design (Basic):**
+-   [x] **To-do 6.1.3: Responsive Design (Basic):**
     -   Ensure that the game layout adapts reasonably well to different screen sizes.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
-
-### Chunk 6.2: Code Cleanup and Refactoring
-
--   [ ] **To-do 6.2.1: Code Formatting and Linting:**
-    -   Set up and use a code formatter (e.g., Prettier) and a linter (e.g., ESLint with recommended TypeScript rules) for consistent code style and to catch potential issues.
-    -   Apply formatting and fix any linting errors.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.2.2: Refactor Components and Logic:**
-    -   Review your frontend and backend code for areas that can be made more modular, readable, and maintainable.
-    -   Extract logic into reusable functions or components.
     -   **GitHub Action:** Commit the changes to `feature/polish`.
 
 ### Chunk 6.3: Testing and Bug Fixing

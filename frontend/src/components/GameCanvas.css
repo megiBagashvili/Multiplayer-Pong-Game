@@ -1,23 +1,24 @@
-/* frontend/src/components/GameCanvas.css */
-
 .game-area {
-  background-color: black;
-  position: relative; /* Crucial for absolute positioning of children */
-  border: 2px solid white;
-  margin: 0 auto; /* Centers the game area if its parent is a block or flex container */
-  overflow: hidden; /* Good practice: hides elements if they accidentally go outside bounds */
-  /* Dynamic width and height will be applied inline */
+  background-color: #000000;
+  position: relative;
+  border: 3px solid #1e675a;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(30, 103, 90, 0.5);
 }
 
 .paddle {
   position: absolute;
-  background-color: lightgray;
-  /* Dynamic left, top, width, and height will be applied inline */
+  background-color: #d8b45d;
+  border-radius: 3px;
+  box-shadow: 0 0 5px #d8b45d;
+  transition: top 0.05s linear;
 }
 
 .ball {
   position: absolute;
-  background-color: white;
-  border-radius: 50%; /* Makes it a circle */
-  /* Dynamic left, top, width, and height will be applied inline */
+  background-color: #dd5d32;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #dd5d32;
 }
