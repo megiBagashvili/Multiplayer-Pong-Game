@@ -24,25 +24,68 @@
 .App-header {
   background-color: #0a3536;
   min-height: 100vh;
+  width: 100%; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
   font-size: calc(10px + 2vmin);
   color: #f0f0f0;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .App-header h1 {
   color: #d8b45d;
-  margin-bottom: 25px;
+  margin-bottom: clamp(10px, 2vh, 20px);
+  font-size: clamp(1.5em, 5vmin, 2.5em);
+  flex-shrink: 0; 
 }
 
-.score-display {
-  margin-bottom: 20px;
+.game-view-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+.status-text-container {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  background-color: rgba(30, 103, 90, 0.2);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+}
+
+.status-text-container h2 {
   color: #d8b45d;
-  font-size: clamp(20px, 3.5vmin, 28px);
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: clamp(1.2em, 3vmin, 1.8em);
+}
+
+.status-text-container p {
+  font-size: clamp(0.9em, 2vmin, 1.1em);
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+
+.status-text-container strong {
+ color: #dd5d32;
+}
+
+
+.score-display {
+  margin-bottom: 10px;
+  color: #d8b45d;
+  font-size: clamp(1em, 2.5vmin, 1.5em);
   font-weight: bold;
   font-family: 'Consolas', 'Menlo', 'monospace';
   padding: 8px 15px;
@@ -50,6 +93,9 @@
   border-radius: 8px;
   background-color: rgba(30, 103, 90, 0.3);
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  width: auto;
+  max-width: 90%;
 }
 
 .App-link {
@@ -69,37 +115,9 @@
   }
 }
 
-.waiting-screen, .game-over-screen {
-  background-color: rgba(30, 103, 90, 0.2);
-  padding: 25px 30px;
-  border-radius: 10px;
-  border: 1px solid #1e675a;
-  margin-top: 20px;
-  color: #f0f0f0;
-  text-align: center;
-  max-width: 860px;
-  width: 90%;
-  box-sizing: border-box;
-}
-
-.waiting-screen h2, .game-over-screen h2 {
-  color: #d8b45d;
-  margin-top: 0;
-}
-
-.waiting-screen p, .game-over-screen p {
-  font-size: clamp(16px, 2.5vmin, 20px);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-.waiting-screen strong, .game-over-screen strong {
-  color: #dd5d32;
-}
-
 .app-button {
-  padding: 12px 25px;
-  font-size: clamp(1em, 2vmin, 1.2em);
+  padding: 10px 20px;
+  font-size: clamp(0.9em, 1.8vmin, 1.1em);
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -109,6 +127,7 @@
   color: #0a3536;
   margin-top: 15px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  flex-shrink: 0;
 }
 
 .app-button:hover:not(:disabled) {
@@ -123,8 +142,14 @@
   cursor: not-allowed;
 }
 
-
-.game-area {
-  margin-top: 15px;
-  margin-bottom: 10px;
+.game-canvas-wrapper {
+  width: 100%;
+  aspect-ratio: 800 / 600;
+  
+  margin-top: 5px;
+  margin-bottom: 5px;
+  
+  position: relative; 
+  overflow: visible;
+  flex-shrink: 1;
 }

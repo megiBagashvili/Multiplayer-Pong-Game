@@ -4,17 +4,13 @@ import './GameCanvas.css';
 
 interface GameCanvasProps {
   gameState: GameState | null;
+  scale?: number;
 }
 
-const GameCanvas: React.FC<GameCanvasProps> = ({ gameState }) => {
+const GameCanvas: React.FC<GameCanvasProps> = ({ gameState, scale = 1 }) => {
   if (!gameState) {
-    return <div>Loading game...</div>;
+    return <div className="game-canvas-placeholder">Loading game state...</div>;
   }
-
-  const gameAreaDynamicStyles: React.CSSProperties = {
-    width: `${gameState.gameArea.width}px`,
-    height: `${gameState.gameArea.height}px`,
-  };
 
   const getPaddleDynamicStyles = (paddle: PaddleState): React.CSSProperties => ({
     left: `${paddle.x}px`,
@@ -30,23 +26,29 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ gameState }) => {
     height: `${ball.radius * 2}px`,
   });
 
+  const scalerStyle: React.CSSProperties = {
+    transform: `scale(${scale})`,
+  };
+
   return (
-    <div className="game-area" style={gameAreaDynamicStyles}>
-      <div
-        className="paddle"
-        style={getPaddleDynamicStyles(gameState.paddle1)}
-        data-testid="paddle-1"
-      ></div>
-      <div
-        className="paddle"
-        style={getPaddleDynamicStyles(gameState.paddle2)}
-        data-testid="paddle-2"
-      ></div>
-      <div
-        className="ball"
-        style={getBallDynamicStyles(gameState.ball)}
-        data-testid="ball"
-      ></div>
+    <div className="game-canvas-scaler" style={scalerStyle}>
+      <div className="game-area">
+        <div
+          className="paddle"
+          style={getPaddleDynamicStyles(gameState.paddle1)}
+          data-testid="paddle-1"
+        ></div>
+        <div
+          className="paddle"
+          style={getPaddleDynamicStyles(gameState.paddle2)}
+          data-testid="paddle-2"
+        ></div>
+        <div
+          className="ball"
+          style={getBallDynamicStyles(gameState.ball)}
+          data-testid="ball"
+        ></div>
+      </div>
     </div>
   );
 };
