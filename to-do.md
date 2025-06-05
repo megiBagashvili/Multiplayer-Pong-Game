@@ -276,13 +276,13 @@
 
 ### Chunk 6.3: Testing and Bug Fixing
 
--   [ ] **To-do 6.3.1: Manual Testing:**
+-   [x] **To-do 6.3.1: Manual Testing:**
     -   Thoroughly test the game with two players in different browsers, focusing on real-time synchronization, paddle control, ball physics, collision detection, scoring, and room management.
     -   Identify and document any bugs or issues.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 6.3.2: Bug Fixing:**
+-   [x] **To-do 6.3.2: Bug Fixing:**
     -   Address the identified bugs and issues. Commit the fixes.
     -   **GitHub Action:** Commit bug fixes to `feature/polish`.
--   [ ] **To-do 6.3.3: Merge Polishing and Refinements:**
+-   [x] **To-do 6.3.3: Merge Polishing and Refinements:**
     -   Create a Pull Request (PR) from the `feature/polish` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.

@@ -45,7 +45,7 @@ io.on('connection', (socket: ServerSocket) => {
     if (typeof callback === 'function') {
       callback({ gameId });
     } else {
-        socket.emit('gameCreated', { gameId });
+      socket.emit('gameCreated', { gameId });
     }
   });
 
@@ -64,11 +64,11 @@ io.on('connection', (socket: ServerSocket) => {
 
       console.log(`Socket ${socket.id} successfully joined game ${gameId} as ${joinResult.playerRole}`);
       if (typeof callback === 'function') {
-        callback({ 
-            success: true, 
-            gameId, 
-            playerRole: joinResult.playerRole, 
-            message: 'Successfully joined game.' 
+        callback({
+          success: true,
+          gameId,
+          playerRole: joinResult.playerRole,
+          message: 'Successfully joined game.'
         });
       }
 
@@ -93,8 +93,8 @@ io.on('connection', (socket: ServerSocket) => {
     }
     
     if (data.playerId !== playerRole) {
-        console.warn(`Socket ${socket.id} (role: ${playerRole}) tried to move paddle for ${data.playerId}. Denied.`);
-        return;
+      console.warn(`Socket ${socket.id} (role: ${playerRole}) tried to move paddle for ${data.playerId}. Denied.`);
+      return;
     }
 
     const game = gameManager.getGame(gameId);
@@ -127,19 +127,22 @@ io.on('connection', (socket: ServerSocket) => {
     const disconnectInfo = gameManager.handlePlayerDisconnect(socket.id);
 
     if (disconnectInfo) {
-      const { gameId, remainingPlayerSocketId } = disconnectInfo;
-      console.log(`Player ${socket.id} left game ${gameId}.`);
+      const { gameId } = disconnectInfo;
+      console.log(`Player (socket ${socket.id}, role ${socket.data.playerRole}) left game ${gameId}.`);
       
       const game = gameManager.getGame(gameId);
       if (game) {
         io.to(gameId).emit('gameState', game.getGameState());
-        io.to(gameId).emit('playerLeft', { disconnectedPlayerId: socket.data.playerRole, newPlayerCount: game.playerCount });
+        io.to(gameId).emit('playerLeft', { 
+          disconnectedPlayerId: socket.data.playerRole,
+          newPlayerCount: game.playerCount 
+        });
 
         if (game.playerCount === 0) {
-            console.log(`Game ${gameId} has no players left. Removing game.`);
-            gameManager.removeGame(gameId);
+          console.log(`Game ${gameId} has no players left. Removing game.`);
+          gameManager.removeGame(gameId);
         } else if (!game.isGameOver) {
-            console.log(`Game ${gameId} now has ${game.playerCount} player(s).`);
+          console.log(`Game ${gameId} now has ${game.playerCount} player(s).`);
         }
       }
     }
@@ -150,7 +153,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Ping Pong Server with Socket.IO is running!');
 });
 
-const gameLoopInterval = 1000;
+const FPS = 60;
+const gameLoopInterval = 1000 / FPS;
 const activeGameLoops = new Map<string, NodeJS.Timeout>();
 
 setInterval(() => {
@@ -158,9 +162,9 @@ setInterval(() => {
     const wasGameOver = game.isGameOver;
 
     if (!game.isGameOver && game.playerCount === 2) {
-        game.paddle1.updatePosition(game.gameAreaHeight);
-        game.paddle2.updatePosition(game.gameAreaHeight);
-        game.updateBall();
+      game.paddle1.updatePosition(game.gameAreaHeight);
+      game.paddle2.updatePosition(game.gameAreaHeight);
+      game.updateBall();
     }
 
     const currentGameState: GameState = game.getGameState();
@@ -168,7 +172,10 @@ setInterval(() => {
 
     if (currentGameState.isGameOver && !wasGameOver) { 
       console.log(`Game ${gameId} ended. Winner: ${currentGameState.winner}. Broadcasting 'gameOver' event.`);
-      io.to(gameId).emit('gameOver', { winner: currentGameState.winner, score: currentGameState.score });
+      io.to(gameId).emit('gameOver', { 
+        winner: currentGameState.winner, 
+        score: currentGameState.score 
+      });
     }
   });
 }, gameLoopInterval);

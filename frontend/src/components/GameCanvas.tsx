@@ -1,7 +1,6 @@
-// frontend/src/components/GameCanvas.tsx
 import React from 'react';
 import { GameState, PaddleState, BallState } from '../types/GameState';
-import './GameCanvas.css'; // Import the CSS file
+import './GameCanvas.css';
 
 interface GameCanvasProps {
   gameState: GameState | null;
@@ -12,7 +11,6 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ gameState }) => {
     return <div>Loading game...</div>;
   }
 
-  // Dynamic styles that depend on gameState values
   const gameAreaDynamicStyles: React.CSSProperties = {
     width: `${gameState.gameArea.width}px`,
     height: `${gameState.gameArea.height}px`,
@@ -37,17 +35,17 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ gameState }) => {
       <div
         className="paddle"
         style={getPaddleDynamicStyles(gameState.paddle1)}
-        data-testid="paddle-1" // Optional: for testing
+        data-testid="paddle-1"
       ></div>
       <div
         className="paddle"
         style={getPaddleDynamicStyles(gameState.paddle2)}
-        data-testid="paddle-2" // Optional: for testing
+        data-testid="paddle-2"
       ></div>
       <div
         className="ball"
         style={getBallDynamicStyles(gameState.ball)}
-        data-testid="ball" // Optional: for testing
+        data-testid="ball"
       ></div>
     </div>
   );

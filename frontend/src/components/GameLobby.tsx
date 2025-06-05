@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './GameLobby.css';
 
 interface GameLobbyProps {
-  onCreateGame: () => void; // Placeholder for now, will emit socket event later
-  onJoinGame: (gameId: string) => void; // Placeholder for now, will emit socket event later
+  onCreateGame: () => void;
+  onJoinGame: (gameId: string) => void;
   isLoading: boolean;
   errorMessage?: string | null;
 }
