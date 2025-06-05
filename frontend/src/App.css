@@ -3,40 +3,61 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
+  margin-bottom: 15px;
 }
 
+.App-logo-small {
+  height: 8vmin;
+  pointer-events: none;
+  margin-bottom: 10px;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .App-logo, .App-logo-small {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
 .App-header {
-  background-color: #282c34; /* Default CRA dark background */
+  background-color: #0a3536;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #f0f0f0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.App-header h1 {
+  color: #d8b45d;
+  margin-bottom: 25px;
 }
 
 .score-display {
   margin-bottom: 20px;
-  color: #ffffff;
-  font-size: 28px;
+  color: #d8b45d;
+  font-size: clamp(20px, 3.5vmin, 28px);
   font-weight: bold;
   font-family: 'Consolas', 'Menlo', 'monospace';
-  padding: 5px 10px;
-  border: 1px solid #61dafb;
-  border-radius: 5px;
+  padding: 8px 15px;
+  border: 2px solid #1e675a;
+  border-radius: 8px;
+  background-color: rgba(30, 103, 90, 0.3);
+  transition: all 0.3s ease;
 }
 
 .App-link {
-  color: #61dafb;
+  color: #dd5d32;
+  transition: color 0.3s ease;
+}
+.App-link:hover {
+  color: #d44025;
 }
 
 @keyframes App-logo-spin {
@@ -46,4 +67,64 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.waiting-screen, .game-over-screen {
+  background-color: rgba(30, 103, 90, 0.2);
+  padding: 25px 30px;
+  border-radius: 10px;
+  border: 1px solid #1e675a;
+  margin-top: 20px;
+  color: #f0f0f0;
+  text-align: center;
+  max-width: 860px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.waiting-screen h2, .game-over-screen h2 {
+  color: #d8b45d;
+  margin-top: 0;
+}
+
+.waiting-screen p, .game-over-screen p {
+  font-size: clamp(16px, 2.5vmin, 20px);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.waiting-screen strong, .game-over-screen strong {
+  color: #dd5d32;
+}
+
+.app-button {
+  padding: 12px 25px;
+  font-size: clamp(1em, 2vmin, 1.2em);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease, box-shadow 0.2s ease;
+  font-weight: bold;
+  background-color: #dd5d32;
+  color: #0a3536;
+  margin-top: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.app-button:hover:not(:disabled) {
+  background-color: #d44025;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+.app-button:disabled {
+  background-color: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+
+.game-area {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }

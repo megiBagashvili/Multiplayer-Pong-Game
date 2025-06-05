@@ -265,39 +265,24 @@
 
 ### Chunk 6.1: Visual Enhancements and User Experience
 
--   [ ] **To-do 6.1.1: Improve Styling:**
+-   [x] **To-do 6.1.1: Improve Styling:**
     -   **GitHub Action:** Create a new branch named `feature/polish` based on `main`.
     -   Refine the CSS for the game area, paddles, ball, and scores to create a more visually appealing and polished look.
     -   Consider adding animations or transitions for smoother movement.
     -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.1.2: Add User Feedback:**
-    -   Provide visual feedback to the players (e.g., when a point is scored, when a player joins a game).
-    -   Display messages for game over conditions.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.1.3: Responsive Design (Basic):**
+-   [x] **To-do 6.1.3: Responsive Design (Basic):**
     -   Ensure that the game layout adapts reasonably well to different screen sizes.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
-
-### Chunk 6.2: Code Cleanup and Refactoring
-
--   [ ] **To-do 6.2.1: Code Formatting and Linting:**
-    -   Set up and use a code formatter (e.g., Prettier) and a linter (e.g., ESLint with recommended TypeScript rules) for consistent code style and to catch potential issues.
-    -   Apply formatting and fix any linting errors.
-    -   **GitHub Action:** Commit the changes to `feature/polish`.
--   [ ] **To-do 6.2.2: Refactor Components and Logic:**
-    -   Review your frontend and backend code for areas that can be made more modular, readable, and maintainable.
-    -   Extract logic into reusable functions or components.
     -   **GitHub Action:** Commit the changes to `feature/polish`.
 
 ### Chunk 6.3: Testing and Bug Fixing
 
--   [ ] **To-do 6.3.1: Manual Testing:**
+-   [x] **To-do 6.3.1: Manual Testing:**
     -   Thoroughly test the game with two players in different browsers, focusing on real-time synchronization, paddle control, ball physics, collision detection, scoring, and room management.
     -   Identify and document any bugs or issues.
     -   **GitHub Action:** (No code change, ensure testing).
--   [ ] **To-do 6.3.2: Bug Fixing:**
+-   [x] **To-do 6.3.2: Bug Fixing:**
     -   Address the identified bugs and issues. Commit the fixes.
     -   **GitHub Action:** Commit bug fixes to `feature/polish`.
--   [ ] **To-do 6.3.3: Merge Polishing and Refinements:**
+-   [x] **To-do 6.3.3: Merge Polishing and Refinements:**
     -   Create a Pull Request (PR) from the `feature/polish` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
