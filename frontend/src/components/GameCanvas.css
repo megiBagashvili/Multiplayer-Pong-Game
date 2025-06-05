@@ -1,4 +1,6 @@
 .game-area {
+  width: 800px;
+  height: 600px;
   background-color: #000000;
   position: relative;
   border: 3px solid #1e675a;
@@ -21,4 +23,10 @@
   background-color: #dd5d32;
   border-radius: 50%;
   box-shadow: 0 0 8px #dd5d32;
+}
+
+.game-canvas-scaler {
+  width: 800px;
+  height: 600px;
+  transform-origin: top left;
 }
