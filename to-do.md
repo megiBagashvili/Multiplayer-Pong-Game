@@ -242,22 +242,22 @@
 
 ### Chunk 5.1: Frontend Game Room UI
 
--   [ ] **To-do 5.1.1: Create Game Lobby/Join Screen:**
+-   [x] **To-do 5.1.1: Create Game Lobby/Join Screen:**
     -   **GitHub Action:** Create a new branch named `feature/frontend-rooms` based on `main`.
     -   Create new React components (e.g., `GameLobby.tsx`, `JoinGame.tsx`).
     -   Implement a UI in `GameLobby` that allows a player to create a new game. Upon creation, the server should return a `gameId`, and the player should be navigated to the game screen.
     -   Implement a UI in `JoinGame` that allows a player to enter a `gameId` and attempt to join an existing game.
     -   You might need to manage different states in your `App.tsx` or a routing library (like React Router) to switch between the lobby/join screen and the game screen.
     -   **GitHub Action:** Commit the changes to `feature/frontend-rooms`.
--   [ ] **To-do 5.1.2: Connect Frontend to Backend for Room Management:**
+-   [x] **To-do 5.1.2: Connect Frontend to Backend for Room Management:**
     -   In your React components, use the Socket.IO client to emit the `'createGame'` and `'joinGame'` events to the backend when the user interacts with the UI.
     -   Handle the backend's responses (e.g., receiving a `gameId` after creating a game, or an error message if joining fails).
     -   Update the frontend's state (e.g., store the current `gameId`) based on these responses.
     -   **GitHub Action:** Commit the changes to `feature/frontend-rooms`.
--   [ ] **To-do 5.1.3: Display Game ID (Optional):**
+-   [x] **To-do 5.1.3: Display Game ID (Optional):**
     -   Once a game is created, you can display the `gameId` to the creating player so they can share it with another player.
     -   **GitHub Action:** Commit the changes to `feature/frontend-rooms`.
--   [ ] **To-do 5.1.4: Merge Frontend Game Room UI:**
+-   [x] **To-do 5.1.4: Merge Frontend Game Room UI:**
     -   Create a Pull Request (PR) from the `feature/frontend-rooms` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
 
