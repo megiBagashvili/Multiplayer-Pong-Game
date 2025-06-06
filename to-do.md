@@ -286,3 +286,129 @@
 -   [x] **To-do 6.3.3: Merge Polishing and Refinements:**
     -   Create a Pull Request (PR) from the `feature/polish` branch to the `main` branch on GitHub.
     -   Review the code and merge the PR. Note the merge commit link.
+
+
+# Real-Time Ping Pong Game: Deployment Phase
+
+## Phase 7: Deployment (Branch: `feature/deployment`)
+
+### Chunk 7.1: Pre-Deployment Code Preparation
+
+-   [x] **To-do 7.1.1: Prepare Backend Scripts**
+    -   **GitHub Action:** Create a new branch named `feature/deployment` based on `main`.
+    -   Open `backend/package.json`.
+    -   In the `"scripts"` section, add a `"build"` script to run `tsc` and a `"start"` script to run the compiled `dist/server.js` with Node. This is crucial for running the server in a production environment.
+        ```json
+        "scripts": {
+          "dev": "nodemon src/server.ts",
+          "build": "tsc",
+          "start": "node dist/server.js"
+        },
+        ```
+    -   **GitHub Action:** Commit the changes to `feature/deployment`.
+
+-   [x] **To-do 7.1.2: Update Backend CORS Configuration**
+    -   Open `backend/src/server.ts`.
+    -   Modify the `cors` options to accept connections from your future frontend URL. Add a placeholder for now, which we will update later with the real game link from Vercel.
+        ```typescript
+        const io = new SocketIOServer(httpServer, {
+          cors: {
+            origin: [
+              "http://localhost:3000",         // For local testing
+              "YOUR_VERCEL_APP_URL_HERE"     // Placeholder for your live game
+            ],
+            methods: ["GET", "POST"]
+          }
+        });
+        ```
+    -   **GitHub Action:** Commit the changes to `feature/deployment`.
+
+-   [x] **To-do 7.1.3: Prepare Frontend for Environment Variables**
+    -   Open `frontend/src/App.tsx`.
+    -   Change the hardcoded `SOCKET_SERVER_URL` to use an environment variable. This allows you to easily switch between your local server and your live EC2 server without changing code.
+        ```typescript
+        const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL || 'http://localhost:3001';
+        ```
+    -   **GitHub Action:** Commit the changes to `feature/deployment`.
+
+-   [x] **To-do 7.1.4: Push Preparation Changes**
+    -   Push all the preparatory commits from this chunk to your `feature/deployment` branch on GitHub.
+
+### Chunk 7.2: Backend Server Deployment (AWS EC2)
+
+-   [ ] **To-do 7.2.1: Configure EC2 Instance & Security Group**
+    -   Use your existing `t2.micro` EC2 instance and `.pem` key file.
+    -   Navigate to the Security Group for your instance in the AWS Console.
+    -   Ensure you have the following **inbound rules**:
+        -   **Type:** `SSH`, **Port:** `22`, **Source:** `Anywhere` (0.0.0.0/0) or `My IP`
+        -   **Type:** `Custom TCP`, **Port:** `3001` (for our backend), **Source:** `Anywhere` (0.0.0.0/0)
+    -   **GitHub Action:** (No code change, AWS console configuration).
+
+-   [ ] **To-do 7.2.2: Set Up Server Environment**
+    -   Connect to your EC2 instance via SSH (e.g., using EC2 Instance Connect).
+    -   Run the following commands in the EC2 terminal:
+        ```bash
+        # Update system packages
+        sudo dnf update -y
+        
+        # Install Git, Node.js, and PM2 process manager
+        sudo dnf install -y git nodejs
+        sudo npm install -g pm2
+        ```
+    -   Clone your repository onto the server:
+        ```bash
+        git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+        cd your-repo-name # Navigate into your project folder
+        ```
+    -   **GitHub Action:** (No code change, server setup).
+
+-   [ ] **To-do 7.2.3: Install, Build, and Run Backend**
+    -   Navigate to your backend folder on the server: `cd backend`.
+    -   Install dependencies: `npm install`.
+    -   Build the TypeScript code: `npm run build`.
+    -   Start the server using PM2 to keep it running permanently:
+        ```bash
+        pm2 start npm --name "pingpong-backend" -- start
+        ```
+    -   Verify it's online: `pm2 list`. You should see `pingpong-backend` with a green `online` status.
+    -   **GitHub Action:** (No code change, server deployment).
+
+### Chunk 7.3: Frontend Application Deployment (Vercel)
+
+-   [ ] **To-do 7.3.1: Connect Vercel to Your GitHub**
+    -   Go to [Vercel.com](https://vercel.com/) and sign up/log in with your GitHub account.
+    -   Click "Add New..." -> "Project".
+    -   Select your Ping Pong game repository and click "Import".
+    -   **GitHub Action:** (No code change, Vercel setup).
+
+-   [ ] **To-do 7.3.2: Configure and Deploy Vercel Project**
+    -   On the "Configure Project" screen in Vercel:
+        -   Set the **Root Directory** to `frontend`.
+        -   Expand the **Environment Variables** section and add one:
+            -   **Name:** `REACT_APP_SOCKET_SERVER_URL`
+            -   **Value:** `http://<YOUR_EC2_PUBLIC_IP>:3001` (Replace `<YOUR_EC2_PUBLIC_IP>` with the public IP address of your EC2 instance).
+    -   Click the **"Deploy"** button.
+    -   Wait for the deployment to finish. Vercel will provide you with your public **game link**.
+    -   **GitHub Action:** (No code change, Vercel deployment).
+
+### Chunk 7.4: Finalization and Live Testing
+
+-   [ ] **To-do 7.4.1: Update Live Backend CORS**
+    -   Go back to your EC2 terminal.
+    -   Stop the running backend process: `pm2 stop pingpong-backend`.
+    -   Open the server source file for editing: `nano backend/src/server.ts`.
+    -   Find the `cors` section and replace `"YOUR_VERCEL_APP_URL_HERE"` with your actual Vercel game link (e.g., `https://your-game.vercel.app`).
+    -   Save (`Ctrl+O`, `Enter`) and exit (`Ctrl+X`).
+    -   Re-build the backend code: `npm run build` (while in the `backend` directory).
+    -   Restart the server with the new configuration: `pm2 restart pingpong-backend`.
+    -   **GitHub Action:** (No code change, live server configuration).
+
+-   [ ] **To-do 7.4.2: Test the Live Game**
+    -   Open your public Vercel game link in two different browsers.
+    -   Play a full game to ensure everything works as expected.
+    -   **GitHub Action:** (No code change, final testing).
+
+-   [ ] **To-do 7.4.3: Merge Deployment Branch**
+    -   Locally, update the `README.md` file to include the live game link. Commit and push this change to `feature/deployment`.
+    -   On GitHub, create a Pull Request (PR) from `feature/deployment` to the `main` branch.
+    -   Review the code and merge the PR. Your project is now fully deployed and documented!
