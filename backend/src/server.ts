@@ -15,7 +15,10 @@ app.use(express.json());
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: "*",
+    origin: [
+      "http://localhost:3000",
+      "http://16.170.233.147:8080"
+    ],
     methods: ["GET", "POST"]
   }
 });
