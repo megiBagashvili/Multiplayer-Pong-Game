@@ -14,14 +14,14 @@ app.use(express.json());
 
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {
-          cors: {
-            origin: [
-              "http://localhost:3000",
-              "http://13.60.228.90:8080"
-            ],
-            methods: ["GET", "POST"]
-          }
-        });
+  cors: {
+    origin: [
+      "http://localhost:3000", // For local testing
+      "YOUR_VERCEL_APP_URL_HERE", // Placeholder for your live game
+    ],
+    methods: ["GET", "POST"],
+  },
+});
 
 const gameManager = new GameManager();
 
