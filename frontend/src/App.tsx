@@ -11,8 +11,7 @@ import {
 import GameCanvas from "./components/GameCanvas";
 import GameLobby from "./components/GameLobby";
 
-const socketIoUrl = `http://${window.location.hostname}:3001`;
-const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL || socketIoUrl;
+const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL || 'http://localhost:3001';
 const NATIVE_GAME_WIDTH = 800;
 const NATIVE_GAME_HEIGHT = 600;
 
