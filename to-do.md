@@ -290,32 +290,34 @@
 
 # Real-Time Ping Pong Game: Deployment Phase
 
-## Phase 7: Deployment (Branch: `feature/deployment`)
+## Phase 7: Deployment (All on AWS EC2) (Branch: `feature/deployment`)
 
 ### Chunk 7.1: Pre-Deployment Code Preparation
 
 -   [x] **To-do 7.1.1: Prepare Backend Scripts**
-    -   **GitHub Action:** Create a new branch named `feature/deployment` based on `main`.
+    -   **GitHub Action:** Create a new branch named `feature/deployment` based on `main` if you haven't already.
     -   Open `backend/package.json`.
-    -   In the `"scripts"` section, add a `"build"` script to run `tsc` and a `"start"` script to run the compiled `dist/server.js` with Node. This is crucial for running the server in a production environment.
-        ```json
-        "scripts": {
-          "dev": "nodemon src/server.ts",
-          "build": "tsc",
-          "start": "node dist/server.js"
-        },
+    -   Ensure your `"scripts"` section includes `"build": "tsc"` and `"start": "node dist/server.js"`.
+    -   **GitHub Action:** Commit any changes to `feature/deployment`.
+
+-   [x] **To-do 7.1.2: Make Frontend Socket URL Dynamic**
+    -   Open `frontend/src/App.tsx`.
+    -   Find the line defining `SOCKET_SERVER_URL` and replace it with the following code. This allows the frontend to automatically find the backend whether it's running locally or on the deployed EC2 instance.
+        ```typescript
+        const socketIoUrl = `http://${window.location.hostname}:3001`;
+        const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL || socketIoUrl;
         ```
     -   **GitHub Action:** Commit the changes to `feature/deployment`.
 
--   [x] **To-do 7.1.2: Update Backend CORS Configuration**
+-   [x] **To-do 7.1.3: Update Backend CORS for Live URL**
     -   Open `backend/src/server.ts`.
-    -   Modify the `cors` options to accept connections from your future frontend URL. Add a placeholder for now, which we will update later with the real game link from Vercel.
+    -   The `cors` origin list needs to allow connections from your EC2 instance on the frontend port (`8080`). You can add your Public IP now, or use a wildcard for initial testing (less secure).
         ```typescript
         const io = new SocketIOServer(httpServer, {
           cors: {
             origin: [
-              "http://localhost:3000",         // For local testing
-              "YOUR_VERCEL_APP_URL_HERE"     // Placeholder for your live game
+              "http://localhost:3000",
+              "http://<YOUR_EC2_PUBLIC_IP>:8080" // Replace with your EC2 IP
             ],
             methods: ["GET", "POST"]
           }
@@ -323,92 +325,57 @@
         ```
     -   **GitHub Action:** Commit the changes to `feature/deployment`.
 
--   [x] **To-do 7.1.3: Prepare Frontend for Environment Variables**
-    -   Open `frontend/src/App.tsx`.
-    -   Change the hardcoded `SOCKET_SERVER_URL` to use an environment variable. This allows you to easily switch between your local server and your live EC2 server without changing code.
-        ```typescript
-        const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL || 'http://localhost:3001';
-        ```
-    -   **GitHub Action:** Commit the changes to `feature/deployment`.
+-   [x] **To-do 7.1.4: Push All Preparation Changes**
+    -   Push all commits from this chunk to your `feature/deployment` branch on GitHub.
 
--   [x] **To-do 7.1.4: Push Preparation Changes**
-    -   Push all the preparatory commits from this chunk to your `feature/deployment` branch on GitHub.
+### Chunk 7.2: EC2 Instance Setup and Deployment
 
-### Chunk 7.2: Backend Server Deployment (AWS EC2)
-
--   [ ] **To-do 7.2.1: Configure EC2 Instance & Security Group**
-    -   Use your existing `t2.micro` EC2 instance and `.pem` key file.
-    -   Navigate to the Security Group for your instance in the AWS Console.
-    -   Ensure you have the following **inbound rules**:
-        -   **Type:** `SSH`, **Port:** `22`, **Source:** `Anywhere` (0.0.0.0/0) or `My IP`
-        -   **Type:** `Custom TCP`, **Port:** `3001` (for our backend), **Source:** `Anywhere` (0.0.0.0/0)
+-   [x] **To-do 7.2.1: Configure Security Group**
+    -   In the AWS Console, navigate to your EC2 instance's Security Group.
+    -   Ensure you have these **inbound rules**:
+        -   **Type:** `Custom TCP`, **Port:** `3001` (Backend), **Source:** `Anywhere` (0.0.0.0/0)
+        -   **Type:** `Custom TCP`, **Port:** `8080` (Frontend), **Source:** `Anywhere` (0.0.0.0/0)
     -   **GitHub Action:** (No code change, AWS console configuration).
 
--   [ ] **To-do 7.2.2: Set Up Server Environment**
-    -   Connect to your EC2 instance via SSH (e.g., using EC2 Instance Connect).
-    -   Run the following commands in the EC2 terminal:
+-   [ ] **To-do 7.2.2: Connect and Get Latest Code**
+    -   Connect to your EC2 instance via SSH.
+    -   Navigate to your project directory (e.g., `cd Multiplayer-Pong-Game`).
+    -   Pull the latest code from your deployment branch:
         ```bash
-        # Update system packages
-        sudo dnf update -y
-        
-        # Install Git, Node.js, and PM2 process manager
-        sudo dnf install -y git nodejs
-        sudo npm install -g pm2
+        git pull origin feature/deployment
         ```
-    -   Clone your repository onto the server:
-        ```bash
-        git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-        cd your-repo-name # Navigate into your project folder
-        ```
-    -   **GitHub Action:** (No code change, server setup).
+    -   **GitHub Action:** (No code change, server operation).
 
--   [ ] **To-do 7.2.3: Install, Build, and Run Backend**
-    -   Navigate to your backend folder on the server: `cd backend`.
+-   [ ] **To-do 7.2.3: Deploy Backend**
+    -   Navigate to the backend directory: `cd backend`.
+    -   Install dependencies if you haven't: `npm install`.
+    -   Build the code: `npm run build`.
+    -   Check the status of your backend process: `pm2 list`.
+    -   If it's running, restart it to apply changes: `pm2 restart pingpong-backend`. If not, start it: `pm2 start npm --name "pingpong-backend" -- start`.
+    -   **GitHub Action:** (No code change, server operation).
+
+-   [ ] **To-do 7.2.4: Deploy Frontend**
+    -   Navigate to the frontend directory: `cd ../frontend`.
     -   Install dependencies: `npm install`.
-    -   Build the TypeScript code: `npm run build`.
-    -   Start the server using PM2 to keep it running permanently:
+    -   Create the production build files: `npm run build`.
+    -   Install `serve` globally if you haven't: `sudo npm install -g serve`.
+    -   Start the frontend server using PM2:
         ```bash
-        pm2 start npm --name "pingpong-backend" -- start
+        pm2 start serve -s build --name "pingpong-frontend" -- -l 8080
         ```
-    -   Verify it's online: `pm2 list`. You should see `pingpong-backend` with a green `online` status.
-    -   **GitHub Action:** (No code change, server deployment).
+    -   Verify both processes are online: `pm2 list`.
+    -   **GitHub Action:** (No code change, server operation).
 
-### Chunk 7.3: Frontend Application Deployment (Vercel)
+### Chunk 7.3: Final Testing and Wrap-up
 
--   [ ] **To-do 7.3.1: Connect Vercel to Your GitHub**
-    -   Go to [Vercel.com](https://vercel.com/) and sign up/log in with your GitHub account.
-    -   Click "Add New..." -> "Project".
-    -   Select your Ping Pong game repository and click "Import".
-    -   **GitHub Action:** (No code change, Vercel setup).
-
--   [ ] **To-do 7.3.2: Configure and Deploy Vercel Project**
-    -   On the "Configure Project" screen in Vercel:
-        -   Set the **Root Directory** to `frontend`.
-        -   Expand the **Environment Variables** section and add one:
-            -   **Name:** `REACT_APP_SOCKET_SERVER_URL`
-            -   **Value:** `http://<YOUR_EC2_PUBLIC_IP>:3001` (Replace `<YOUR_EC2_PUBLIC_IP>` with the public IP address of your EC2 instance).
-    -   Click the **"Deploy"** button.
-    -   Wait for the deployment to finish. Vercel will provide you with your public **game link**.
-    -   **GitHub Action:** (No code change, Vercel deployment).
-
-### Chunk 7.4: Finalization and Live Testing
-
--   [ ] **To-do 7.4.1: Update Live Backend CORS**
-    -   Go back to your EC2 terminal.
-    -   Stop the running backend process: `pm2 stop pingpong-backend`.
-    -   Open the server source file for editing: `nano backend/src/server.ts`.
-    -   Find the `cors` section and replace `"YOUR_VERCEL_APP_URL_HERE"` with your actual Vercel game link (e.g., `https://your-game.vercel.app`).
-    -   Save (`Ctrl+O`, `Enter`) and exit (`Ctrl+X`).
-    -   Re-build the backend code: `npm run build` (while in the `backend` directory).
-    -   Restart the server with the new configuration: `pm2 restart pingpong-backend`.
-    -   **GitHub Action:** (No code change, live server configuration).
-
--   [ ] **To-do 7.4.2: Test the Live Game**
-    -   Open your public Vercel game link in two different browsers.
-    -   Play a full game to ensure everything works as expected.
+-   [ ] **To-do 7.3.1: Test the Live Game**
+    -   Open your web browser and navigate to `http://<YOUR_EC2_PUBLIC_IP>:8080`.
+    -   The game should load and be playable.
+    -   Open the link in a second browser window to test the full multiplayer functionality.
     -   **GitHub Action:** (No code change, final testing).
 
--   [ ] **To-do 7.4.3: Merge Deployment Branch**
-    -   Locally, update the `README.md` file to include the live game link. Commit and push this change to `feature/deployment`.
-    -   On GitHub, create a Pull Request (PR) from `feature/deployment` to the `main` branch.
-    -   Review the code and merge the PR. Your project is now fully deployed and documented!
+-   [ ] **To-do 7.3.2: Merge Deployment Branch**
+    -   Once you are satisfied that the live version works correctly, you can merge your changes.
+    -   Locally, update the `README.md` file to include your live game link (`http://<YOUR_EC2_PUBLIC_IP>:8080`).
+    -   Commit and push the README update to `feature/deployment`.
+    -   On GitHub, create and merge the Pull Request from `feature/deployment` into `main`.
