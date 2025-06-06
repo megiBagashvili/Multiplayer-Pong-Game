@@ -14,14 +14,11 @@ app.use(express.json());
 
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {
-          cors: {
-            origin: [
-              "http://localhost:3000",
-              "http://13.60.228.90:8080"
-            ],
-            methods: ["GET", "POST"]
-          }
-        });
+  cors: {
+    origin: ["http://localhost:3000", "http://13.60.228.90:8080"],
+    methods: ["GET", "POST"],
+  },
+});
 
 const gameManager = new GameManager();
 
