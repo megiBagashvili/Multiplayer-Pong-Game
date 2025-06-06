@@ -307,7 +307,7 @@
         ```
     -   **GitHub Action:** Commit the changes to `feature/deployment`.
 
--   [ ] **To-do 7.1.2: Update Backend CORS Configuration**
+-   [x] **To-do 7.1.2: Update Backend CORS Configuration**
     -   Open `backend/src/server.ts`.
     -   Modify the `cors` options to accept connections from your future frontend URL. Add a placeholder for now, which we will update later with the real game link from Vercel.
         ```typescript
@@ -323,7 +323,7 @@
         ```
     -   **GitHub Action:** Commit the changes to `feature/deployment`.
 
--   [ ] **To-do 7.1.3: Prepare Frontend for Environment Variables**
+-   [x] **To-do 7.1.3: Prepare Frontend for Environment Variables**
     -   Open `frontend/src/App.tsx`.
     -   Change the hardcoded `SOCKET_SERVER_URL` to use an environment variable. This allows you to easily switch between your local server and your live EC2 server without changing code.
         ```typescript
@@ -331,7 +331,7 @@
         ```
     -   **GitHub Action:** Commit the changes to `feature/deployment`.
 
--   [ ] **To-do 7.1.4: Push Preparation Changes**
+-   [x] **To-do 7.1.4: Push Preparation Changes**
     -   Push all the preparatory commits from this chunk to your `feature/deployment` branch on GitHub.
 
 ### Chunk 7.2: Backend Server Deployment (AWS EC2)
