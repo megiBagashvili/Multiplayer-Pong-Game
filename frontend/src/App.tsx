@@ -2,12 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { io, Socket } from "socket.io-client";
-import {
-  GameState,
-  PaddleState,
-  BallState,
-  ScoreState,
-} from "./types/GameState";
+import { GameState, ScoreState } from "./types/GameState";
 import GameCanvas from "./components/GameCanvas";
 import GameLobby from "./components/GameLobby";
 
@@ -88,18 +83,17 @@ function App() {
       }
     };
 
-    if (appViewRef.current !== 'lobby' && gameCanvasWrapperRef.current) {
-      calculateScale(); 
-      
+    const wrapperNode = gameCanvasWrapperRef.current;
+    if (appViewRef.current !== 'lobby' && wrapperNode) {
+      calculateScale();
+
       const resizeObserver = new ResizeObserver(calculateScale);
-      resizeObserver.observe(gameCanvasWrapperRef.current);
-      window.addEventListener('resize', calculateScale); 
-      
+      resizeObserver.observe(wrapperNode);
+      window.addEventListener('resize', calculateScale);
+
       return () => {
         window.removeEventListener('resize', calculateScale);
-        if (gameCanvasWrapperRef.current) {
-          resizeObserver.unobserve(gameCanvasWrapperRef.current);
-        }
+        resizeObserver.unobserve(wrapperNode);
         resizeObserver.disconnect();
       };
     } else {
@@ -224,6 +218,9 @@ function App() {
       newSocket.disconnect();
       socketRef.current = null;
     };
+    // Intentionally mount-once: adding gameState here would tear down and
+    // reopen the socket on every game tick instead of just once per session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -291,7 +288,6 @@ function App() {
       { key: keysToWatch.down, direction: "down" },
     ];
 
-    let emitted = false;
     actions.forEach((action) => {
       const isPressed = !!pressedKeys[action.key];
       const wasPressed = !!prevPressedKeysRef.current[action.key];
@@ -304,12 +300,9 @@ function App() {
         };
         console.log(`[PaddleMoveEffect] Emitting 'paddleMove':`, payload);
         currentSocket.emit("paddleMove", payload);
-        emitted = true;
       }
     });
-    // if (emitted || Object.keys(pressedKeys).some(key => pressedKeys[key] !== prevPressedKeysRef.current[key])) {
-       prevPressedKeysRef.current = { ...pressedKeys };
-    // }
+    prevPressedKeysRef.current = { ...pressedKeys };
   }, [pressedKeys]);
 
 

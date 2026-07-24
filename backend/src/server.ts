@@ -9,16 +9,17 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const PADDLE_SPEED = 8;
 
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
+  : ["http://localhost:3000"];
+
 app.use(cors());
 app.use(express.json());
 
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: [
-      "http://localhost:3000",
-      "http://16.170.233.147:8080"
-    ],
+    origin: corsOrigins,
     methods: ["GET", "POST"]
   }
 });
